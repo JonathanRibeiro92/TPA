@@ -1,8 +1,12 @@
 package hashFunctions;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.util.LinkedList;
+import java.util.Random;
 import java.io.IOException;
 import java.lang.Math;
 
@@ -19,8 +23,8 @@ import java.lang.Math;
 //p(33) = ascii('g') + ascii('o')*33 + ascii('i')*33² + ...
 
 public class HashFunctions {
-	public final int TAM_VET = 100;
-	public final int x=0;
+	public static int TAM_VET = 100;
+	public int x=0;
 	public int[] tabHashColisoes;
 	
 	//Somatório dos componentes ascii dos caracteres
@@ -44,6 +48,85 @@ public class HashFunctions {
 			return soma;
 		}
 		
+		private int djb_hash(String key)
+		{
+		    int h = 0;
+		    int i;
+
+		    for (i = 0; i < key.length() ; i++)
+		    {
+		        h = 33 * h + key.charAt(i);
+		    }
+
+		    return h;
+		}
+		
+		private double modified_djb_hash(String key)
+		{
+		    
+		    double h = 0;
+		    int i;
+
+		    for (i = 0; i < key.length(); i++)
+		    {
+		        h = 33 * Math.pow(h,key.charAt(i));
+		    }
+
+		    return h;
+		}
+		
+		private long fnv_hash(String key)
+		{
+		     
+			long h = 2166136261;
+		    int i;
+
+		    for (i = 0; i < key.length(); i++)
+		    {
+		        h = (h * 16777619) ^ key.charAt(i);
+		    }
+
+		    return h;
+		}
+		
+		
+		private int elf_hash(String key)
+		{
+		    
+		    int h = 0;
+			long g;
+		    int i;
+
+		    for (i = 0; i < key.length(); i++)
+		    {
+		        h = (h << 4) + key.charAt(i);
+		        g = h & 0xf0000000L;
+
+		        if (g != 0)
+		        {
+		            h ^= g >> 24;
+		        }
+
+		        h &= ~g;
+		    }
+
+		    return h;
+		}
+		
+		int jsw_hash(String key)
+		{
+		    
+		    long h = 16777551;
+		    int i;
+
+		    for (i = 0; i < key.length(); i++)
+		    {
+		        h = (long)((h << 1 | h >> 31) ^ (tab(key.charAt(i))));
+		    }
+
+		    return h;
+		}
+		
 		private int comprimir(int x){
 			
 			return x%TAM_VET; 
@@ -52,20 +135,37 @@ public class HashFunctions {
 		
 		public void leArquivo(String arquivo){
 			
+			tabHashColisoes = new int[TAM_VET];
+			
 			try{
 		         BufferedReader br = new BufferedReader(new FileReader(arquivo));
 		         while(br.ready()){
 		            String linha = br.readLine();
 		            int hash = 0;
 		            hash =comprimir(fsomaPolinomial(linha));
-		            tabHashColisoes[hash]++;
-		            System.out.println(linha);
+		            this.tabHashColisoes[hash]++;
+		            //System.out.println(linha);
 		         }
 		         br.close();
 		      }catch(IOException ioe){
 		         ioe.printStackTrace();
 		      }
 		   }
+		
+		
+		public void gravaArquivo(int[] obj) throws FileNotFoundException,IOException {
+			BufferedWriter writer = new BufferedWriter(new FileWriter("src\\hashFunctions\\resultado.csv"));
+	        for(int i = 0; i < obj.length ; i++){
+	        	writer.write(obj[i] + ";");
+	            writer.write("\n");
+	        }
+	        writer.close();
+	    }
 
+		
+}	
+
+
+			        
+	        
 	
-}
