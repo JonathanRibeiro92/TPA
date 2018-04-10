@@ -1,11 +1,18 @@
 package tadDicionario;
 
 import java.util.LinkedList;
+import tadDicionario.HashEngine;
+
 
 class TItemDic{
 	private Object key = null;
 	private Object dado = null;
 	
+	
+	public TItemDic(Object k, Object dado) {
+		this.setKey(k);
+		this.setDado(dado);
+	}
 	
 	public Object getKey() {
 		return key;
@@ -28,12 +35,54 @@ class TItemDic{
 public class TDicChain {
 
 	private int quant_entradas;
-	private int[] vet_conteudo;
-	private int tam_vet_conteudo= 0;
+	private LinkedList<TItemDic> []vet_conteudo = null;
+	private int tam_vet_conteudo = 0;
+	private HashEngine he;
 	
-	tam_vet_conteudo = vet_conteudo.size();
+	
 
+	public TDicChain(int tam_vet, HashEngine he) {
+		tam_vet_conteudo = primoMaiorqN(tam_vet);
+		vet_conteudo = new LinkedList[tam_vet];
+		quant_entradas = 0;
+		this.he = he;
+		
+		for(int i=0; i < tam_vet; i++) {
+			vet_conteudo[i] = new LinkedList<TItemDic>();
+		}
+	}
+
+	public TDicChain(HashEngine he) {
+		int tam_vet = 64;
+		vet_conteudo = new LinkedList[tam_vet];
+		quant_entradas = 0;
+		this.he = he;
+		
+		for(int i=0; i < tam_vet; i++) {
+			vet_conteudo[i] = new LinkedList<TItemDic>();
+		}
+	}
 	
+	
+	private boolean isprimo(int n) {
+		if (n < 2) {
+	        return false;
+		}else {
+	        for (int i = 2; i < n ; i++) {
+	            if (i% n == 0){
+	               return false;
+	            }
+	        }
+	        return true;
+		}
+		
+	}
+		
+	private int primoMaiorqN(int n) {
+		
+		
+		return 0;
+	}
 	
 	
 	
