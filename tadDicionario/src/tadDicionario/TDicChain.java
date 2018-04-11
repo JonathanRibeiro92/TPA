@@ -2,7 +2,7 @@ package tadDicionario;
 
 import java.util.LinkedList;
 import tadDicionario.HashEngine;
-
+import tadDicionario.Primo;
 
 class TItemDic{
 	private Object key = null;
@@ -63,26 +63,6 @@ public class TDicChain {
 		}
 	}
 	
-	
-	private boolean isprimo(int n) {
-		if (n < 2) {
-	        return false;
-		}else {
-	        for (int i = 2; i < n ; i++) {
-	            if (i% n == 0){
-	               return false;
-	            }
-	        }
-	        return true;
-		}
-		
-	}
-		
-	private int primoMaiorqN(int n) {
-		
-		
-		return 0;
-	}
 	
 	
 	
