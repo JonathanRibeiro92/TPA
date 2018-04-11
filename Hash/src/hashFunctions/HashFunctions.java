@@ -171,6 +171,15 @@ public class HashFunctions {
 
 		return x%TAM_VET; 
 	}
+	
+	private int comprimir(BigInteger x){
+		return sum.mod(new BigInteger(""+TAM_VET)).intValue();
+	}
+	
+	private int comprimir(long x){
+
+		return (int)x % TAM_VET; 
+	}
 		
 		
 	public void leArquivo(String arquivo){
