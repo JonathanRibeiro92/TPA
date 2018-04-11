@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import java.util.Random;
 import java.io.IOException;
 import java.lang.Math;
+import java.math.BigInteger;
 
 //
 //N=100
@@ -39,128 +40,167 @@ public class HashFunctions {
 	
 	
 	//Somatório dos componentes ascii dos caracteres
-		private int fsomaPolinomial(String s){
-			int soma = 0;
-			int i;
-			for(i=0;i<s.length();i++){
-				soma+= s.charAt(i)*Math.pow(33, i);
-			}
-			return soma;
+	private int fsomaPolinomial(String s){
+		int soma = 0;
+		int i;
+		for(i=0;i<s.length();i++){
+			soma+= s.charAt(i)*Math.pow(33, i);
 		}
-		
-		private int djb_hash(String key)
-		{
-		    int h = 0;
-		    int i;
+		return soma;
+	}
+	/*	
+	private int djb_hash(String key)
+	{
+	    int h = 0;
+	    int i;
 
-		    for (i = 0; i < key.length() ; i++)
-		    {
-		        h = 33 * h + key.charAt(i);
-		    }
-
-		    return h;
-		}
-		
-		private double modified_djb_hash(String key)
-		{
-		    
-		    double h = 0;
-		    int i;
-
-		    for (i = 0; i < key.length(); i++)
-		    {
-		        h = 33 * Math.pow(h,key.charAt(i));
-		    }
-
-		    return h;
-		}
-		
-		private long fnv_hash(String key)
-		{
-		     
-			long h = 2166136261;
-		    int i;
-
-		    for (i = 0; i < key.length(); i++)
-		    {
-		        h = (h * 16777619) ^ key.charAt(i);
-		    }
-
-		    return h;
-		}
-		
-		
-		private int elf_hash(String key)
-		{
-		    
-		    int h = 0;
-			long g;
-		    int i;
-
-		    for (i = 0; i < key.length(); i++)
-		    {
-		        h = (h << 4) + key.charAt(i);
-		        g = h & 0xf0000000L;
-
-		        if (g != 0)
-		        {
-		            h ^= g >> 24;
-		        }
-
-		        h &= ~g;
-		    }
-
-		    return h;
-		}
-		
-		int jsw_hash(String key)
-		{
-		    
-		    long h = 16777551;
-		    int i;
-
-		    for (i = 0; i < key.length(); i++)
-		    {
-		        h = (long)((h << 1 | h >> 31) ^ (tab(key.charAt(i))));
-		    }
-
-		    return h;
-		}
-		
-		private int comprimir(int x){
-			
-			return x%TAM_VET; 
-		}
-		
-		
-		public void leArquivo(String arquivo){
-			
-			tabHashColisoes = new int[TAM_VET];
-			
-			try{
-		         BufferedReader br = new BufferedReader(new FileReader(arquivo));
-		         while(br.ready()){
-		            String linha = br.readLine();
-		            int hash = 0;
-		            hash =comprimir(fsomaPolinomial(linha));
-		            this.tabHashColisoes[hash]++;
-		            //System.out.println(linha);
-		         }
-		         br.close();
-		      }catch(IOException ioe){
-		         ioe.printStackTrace();
-		      }
-		   }
-		
-		
-		public void gravaArquivo(int[] obj) throws FileNotFoundException,IOException {
-			BufferedWriter writer = new BufferedWriter(new FileWriter("src\\hashFunctions\\resultado.csv"));
-	        for(int i = 0; i < obj.length ; i++){
-	        	writer.write(obj[i] + ";");
-	            writer.write("\n");
-	        }
-	        writer.close();
+	    for (i = 0; i < key.length() ; i++)
+	    {
+		h = 33 * h + key.charAt(i);
 	    }
+
+	    return h;
+	}
+
+	private double modified_djb_hash(String key)
+	{
+
+	    double h = 0;
+	    int i;
+
+	    for (i = 0; i < key.length(); i++)
+	    {
+		h = 33 * Math.pow(h,key.charAt(i));
+	    }
+
+	    return h;
+	}
+*/
+	
+	private static BigInteger djb_hash(String key){
+	   BigInteger h = new BigInteger("0");	
+
+	    for (int i = 0; i < key.length() ; i++)
+	    {
+		BigInteger temp = h.multiply(new BigInteger("33"));
+            	h = temp.add(new BigInteger("" + key.charAt(i)));
+	    }
+
+	    return h;
+	}
+
+	private BigInteger modified_djb_hash(String key){
+
+	    BigInteger h = new BigInteger("0");	
+
+	    for (int i = 0; i < key.length(); i++)
+	    {
+		//h = 33 * Math.pow(h,key.charAt(i));
+		BigInteger temp = h.multiply(new BigInteger("33"));
+		h = temp.xor(new BigInteger("" + key.charAt(i)));
+	    }
+
+	    return h;
+	}
+	
+	/*private long fnv_hash(String key)
+	{
+
+		long h = 2166136261;
+	    int i;
+
+	    for (i = 0; i < key.length(); i++)
+	    {
+		h = (h * 16777619) ^ key.charAt(i);
+	    }
+
+	    return h;
+	}*/
+	private BigInteger fnv_hash(String key){
+
+		BigInteger h = new BigInteger("2166136261");
+		BigInteger fnvValue = new BigInteger("16777619");
+
+	    for (int i = 0; i < key.length(); i++)
+	    {
+		h = (fnvSum.multiply(fnvValue)).xor(new BigInteger("" + key.charAt(i)));
+	    }
+
+	    return h;
+	}
+
+
+	private long elf_hash(String key)
+	{
+
+	    long h = 0;
+		long g;
+	    int i;
+
+	    for (i = 0; i < key.length(); i++)
+	    {
+		h = (h << 4) + key.charAt(i);
+		g = h & 0xf0000000L;
+
+		if (g != 0)
+		{
+		    h ^= g >> 24;
+		}
+
+		h &= ~g;
+	    }
+
+	    return h;
+	}
+		
+	private BigInteger jsw_hash(String key)
+	{
+
+	    BigInteger h = 16777551;
+
+	    for (int i = 0; i < key.length(); i++)
+	    {
+		//h = (long)((h << 1 | h >> 31) ^ (tab(key.charAt(i))));
+		    h = (h.shiftLeft(1).or(h.shiftRight(31))).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
+	    }
+
+	    return h;
+	}
+
+	private int comprimir(int x){
+
+		return x%TAM_VET; 
+	}
+		
+		
+	public void leArquivo(String arquivo){
+
+		tabHashColisoes = new int[TAM_VET];
+
+		try{
+		 BufferedReader br = new BufferedReader(new FileReader(arquivo));
+		 while(br.ready()){
+		    String linha = br.readLine();
+		    int hash = 0;
+		    hash =comprimir(fsomaPolinomial(linha));
+		    this.tabHashColisoes[hash]++;
+		    //System.out.println(linha);
+		 }
+		 br.close();
+	      }catch(IOException ioe){
+		 ioe.printStackTrace();
+	      }
+	   }
+		
+		
+	public void gravaArquivo(int[] obj) throws FileNotFoundException,IOException {
+		BufferedWriter writer = new BufferedWriter(new FileWriter("src\\hashFunctions\\resultado.csv"));
+	for(int i = 0; i < obj.length ; i++){
+		writer.write(obj[i] + ";");
+	    writer.write("\n");
+	}
+	writer.close();
+    }
 
 		
 }	
