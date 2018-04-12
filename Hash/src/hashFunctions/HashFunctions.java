@@ -123,7 +123,7 @@ public class HashFunctions {
 
 	    for (int i = 0; i < key.length(); i++)
 	    {
-		h = (fnvSum.multiply(fnvValue)).xor(new BigInteger("" + key.charAt(i)));
+		h = (h.multiply(fnvValue)).xor(new BigInteger("" + key.charAt(i)));
 	    }
 
 	    return h;
@@ -156,12 +156,12 @@ public class HashFunctions {
 	private BigInteger jsw_hash(String key)
 	{
 
-	    BigInteger h = 16777551;
+	    BigInteger h = new BigInteger("16777551");
 
 	    for (int i = 0; i < key.length(); i++)
 	    {
 		//h = (long)((h << 1 | h >> 31) ^ (tab(key.charAt(i))));
-		    h = (h.shiftLeft(1).or(h.shiftRight(31))).or(TreatBigInteger.charToBigInteger(word.charAt(i)));
+		    h = (h.shiftLeft(1).or(h.shiftRight(31))).or(new BigInteger("" + key.charAt(i)));
 	    }
 
 	    return h;
@@ -173,7 +173,7 @@ public class HashFunctions {
 	}
 	
 	private int comprimir(BigInteger x){
-		return sum.mod(new BigInteger(""+TAM_VET)).intValue();
+		return x.mod(new BigInteger(""+TAM_VET)).intValue();
 	}
 	
 	private int comprimir(long x){
