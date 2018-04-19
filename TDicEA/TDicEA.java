@@ -1,4 +1,0 @@
-//TODO
-public class TDicEA {
-
-}

@@ -1,0 +1,240 @@
+package tadDicionario;
+
+import TabH.TADTabH;
+import java.util.LinkedList;
+import TabH.Item;
+import hashFunctions.*;;
+//TODO
+public class TDicEA extends TADTabH{
+
+ public static final Item NO_SUCH_KEY = new Item(null, null);
+    private static final Item DISPONIVEL = new Item(null, null);
+    private Item[] conteudos;
+    private HashEngine hengine = null;
+    private int N;
+    private int quant = 0;
+
+    public TDicEA(int n, HashEngine paramHengine) {
+
+        N = (int) (n / 0.5);
+
+
+        conteudos = new Item[N];
+
+        hengine = paramHengine;
+    }
+
+    public TDicEA(HashEngine paramHengine) {
+
+        N = 2000;
+
+        conteudos = new Item[N];
+
+        hengine = paramHengine;
+    }
+
+    public TDicEA() {
+
+        N = 2000;
+
+        conteudos = new Item[N];
+
+        hengine = new HashEngineDefault();
+    }
+
+    private int encontraItem(Object k) {
+        int pos = hengine.calcCodeHash(k) % N;
+        int j = pos;
+
+        do {
+            if (conteudos[j] == null) {
+                return -1;
+            }
+
+            if (conteudos[j].equals(TDicEA.DISPONIVEL)) {
+                j = (j + 1) % N;
+            } else if (conteudos[j].getKey().equals(k)) {
+                return j;
+            } else
+            {
+                j = (j + 1) % N;
+            }
+
+        } while (j != pos);
+
+        return -1;
+    } // fim encontraItem
+
+    private void redimensiona() {
+        int NN = (int) (1.5 * N);
+        Item[] novosConteudos = new Item[NN];
+
+        int j = 0;
+
+        // Varre o vetor de conteúdos transferindo o seu conteúdo para o vetor novosConteudos.
+        while (j < conteudos.length) {
+            if ((conteudos[j] != null) && (conteudos[j] != DISPONIVEL)) {
+                Object k = conteudos[j].getKey();
+                Object pelem = conteudos[j].getElement();
+
+                int pos = conteudos[j].getCacheHCode() % NN;
+                int i = pos;
+                boolean fim = false;
+
+                do {
+                    // Altera um item já existente.
+                    if ((novosConteudos[i] != null) && (novosConteudos[i].getKey().equals(k))) {
+                        novosConteudos[i].setElem(pelem);
+                        fim = true;
+                    } else {
+                        // Inclui um item novo.
+                        if ((novosConteudos[i] == null) || (novosConteudos[i] == DISPONIVEL)) {
+                            novosConteudos[i] = conteudos[j];
+                            fim = true;
+                        }
+                    }
+
+                    i = (i + 1) % NN;
+                } while ((i != pos) && !fim);
+            } 
+
+            j = j + 1;
+        }	
+
+        conteudos = novosConteudos;
+        N = NN;
+    }
+
+    
+    public boolean insertItem(Object k, Object elem) {
+        if (this.quant <= this.conteudos.length * 0.8) {
+            int hash = this.hengine.calcCodeHash(k);
+            int index = hash % this.conteudos.length;
+            if (this.conteudos == null) {
+                this.conteudos = new Item[N];
+                this.conteudos[index] = new Item(elem,k, hash);
+                this.quant++;
+                return true;
+            }
+            else if(this.conteudos[index] == null){
+                this.conteudos[index] = new Item(elem,k, hash);
+                this.quant++;
+                return true;
+            }
+            else {
+                //se existem chaves iguais
+                if (this.conteudos[index].getKey() == k) {
+                    //altera o elemento
+                    this.conteudos[index].setElem(elem);
+                    return true;
+                } else {
+                    int i = 1;
+                    //procura o proximo lugar vago
+                    while ((i+index) < this.conteudos.length && this.conteudos[index + i] != null) {
+                        i++;
+                    }
+                    if(i+index == this.conteudos.length){
+                        i = 0;
+                        boolean achou = false;
+                        while (achou == false && i < index){
+                            if(this.conteudos[i] != null){
+                                i++;
+                            }else {
+                                achou = true;
+                            }
+                        }
+                        this.conteudos[i] = new Item(elem,k, hash);
+                        this.quant++;
+                        return true;
+                    }
+                    else {
+                        this.conteudos[index + i] = new Item(elem,k, hash);
+                        this.quant++;
+                        return true;
+                    }
+                    
+                }
+            }
+        }
+        else {
+            this.redimensiona();
+            this.insertItem(k,elem);
+            return true;
+        }
+                    
+
+    }
+
+    public Object findElem(Object k) {
+        int indice = encontraItem(k);
+
+        if (indice == -1) {
+            return NO_SUCH_KEY;
+        } else {
+            return conteudos[indice].getElement();
+        }
+    }
+
+    public Object removeElement(Object k) {
+        int indice = encontraItem(k);
+
+        if (indice == -1) {
+            return NO_SUCH_KEY;
+        } else {
+            Item item = conteudos[indice];
+            this.conteudos[indice] = null;
+            this.quant--;
+            return item;
+        }
+    } 
+
+    public boolean isEmpty() {
+        return quant == 0;
+    } 
+
+    public int size() {
+        return quant;
+    }
+
+    public LinkedList<Object> keys() {
+        LinkedList<Object> lstKeys = new LinkedList<>();
+
+        int i = 0;
+
+        while (i < conteudos.length) {
+            if ((conteudos[i] != null) && (conteudos[i] != DISPONIVEL)) {
+                lstKeys.add(conteudos[i].getKey());
+            }
+
+            i = i + 1;
+        } 
+
+        return lstKeys;
+    } 
+
+    public LinkedList<Object> elements() {
+        LinkedList<Object> lstElements = new LinkedList<>();
+
+        int i = 0;
+
+        while (i < conteudos.length) {
+            if ((conteudos[i] != null) && (conteudos[i] != DISPONIVEL)) {
+                lstElements.add(conteudos[i].getElement());
+            }
+
+            i = i + 1;
+        } 
+
+        return lstElements;
+    } 
+
+    @Override
+    public Object removeElem(Object key) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public boolean empty() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+} 
