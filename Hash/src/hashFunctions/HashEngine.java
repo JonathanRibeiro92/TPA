@@ -1,9 +1,7 @@
-package tadDicionario;
+package hashFunctions;
 
 public abstract class HashEngine {
-
-	protected HashEngine(){}
-	
-	
-	
+    
+    public abstract int calcCodeHash(Object key);
+ 
 }

@@ -2,8 +2,7 @@ package tadDicionario;
 
 import java.util.LinkedList;
 
-
-import tadDicionario.HashEngine;
+import hashFunctions.HashEngine;
 import tadDicionario.Primo;
 
 class TItemDic{
@@ -50,7 +49,7 @@ public class TDicChain {
 	
 
 	public TDicChain(int tam_vet, HashEngine he) {
-		tam_vet_conteudo = primoMaiorqN(tam_vet);
+		tam_vet_conteudo = Primo.primoMaiorqN(tam_vet);
 		vet_conteudo = new LinkedList[tam_vet];
 		quant_entradas = 0;
 		this.he = he;
@@ -71,12 +70,12 @@ public class TDicChain {
 		}
 		
 		//verificando cada posição do vetor anterior
-		for(int i=0; i < tam_vet; i++) {
+		for(int i=0; i < tam_vet_conteudo; i++) {
 			vet_conteudo[i] = new LinkedList<TItemDic>();
 			//navegando pelos itens das listas e calculando nova posição
 			for(int k=0; k<vet_conteudo[i].size(); k++){
 				novo_pos = vet_conteudo[i].get(k).get_cache_hash() % novo_tam;
-				novo_vet[novo_pos].add(vet_conteu[i].get(k));
+				novo_vet[novo_pos].add(vet_conteudo[i].get(k));
 			}
 			
 		}
@@ -102,9 +101,9 @@ public class TDicChain {
 	public boolean insertItem (Object k, Object dado){
 		TItemDic item = new TItemDic(k,dado);
 		
-		int hk = he.hash(k);
+		int hk = he.calcCodeHash(k);
 		
-		int pos = he.hash(k) % tam_vet_conteudo;
+		int pos = he.calcCodeHash(k) % tam_vet_conteudo;
 		
 		//Decidindo se é uma alteração ou a inclusão de uma nova entrada
 		int posAchou = pesquisaItem(k,vet_conteudo[pos]);
@@ -136,7 +135,7 @@ public class TDicChain {
 	
 	
 	public Object removeElement(Object k){
-		int pos = he.hash(k) % tam_vet_conteudo;
+		int pos = he.calcCodeHash(k) % tam_vet_conteudo;
 		
 		int posItem = pesquisaItem(k,vet_conteudo[pos]);
 		TItemDic temp;
