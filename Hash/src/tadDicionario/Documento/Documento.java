@@ -11,7 +11,7 @@ import tadDicionario.TDicEA;
 public class Documento implements IDocumento{
     
     private TDicEA tabFreq;
-    char[] strseparadores = {'?','!','@','#','$','%','&','*','(',')','_','+','=','§','¹','²','³',':',';','.',',',' ','\\','/','|','°','º','ª','>','<','£','¢','[',']','{','}','\n','\t','“','”','’','1','2','3','4','5','6','7','8','9','0'};
+    char[] strseparadores = {'?','!','@','#','$','%','&','*','(',')','_','+','=','§','¹','²','³',':',';','.',',',' ','\\','/','|','°','º','ª','>','<','£','¢','[',']','{','}','\n','\t','“','�?','’','1','2','3','4','5','6','7','8','9','0'};
     public Documento(String nome_arq_doc) throws IOException{
         this.tabFreq = new TDicEA(new HashEngineDefault());
         
