@@ -3,43 +3,44 @@ package tadDicionario;
 import TabH.TADTabH;
 import java.util.LinkedList;
 import TabH.Item;
-import hashFunctions.*;;
+import hashFunctions.*;
 //TODO
 public class TDicEA extends TADTabH{
 
- public static final Item NO_SUCH_KEY = new Item(null, null);
+    public static final Item NO_SUCH_KEY = new Item(null, null);
     private static final Item DISPONIVEL = new Item(null, null);
     private Item[] conteudos;
     private HashEngine hengine = null;
     private int N;
     private int quant = 0;
 
-    public TDicEA(int n, HashEngine paramHengine) {
+    public TDicEA(int n, HashEngine pHashEngine) {
 
-        N = (int) (n / 0.5);
-
-
+        N = Primo.primoMaiorqN(n);
         conteudos = new Item[N];
-
-        hengine = paramHengine;
+        hengine = pHashEngine;
+        quant = 0;
     }
 
-    public TDicEA(HashEngine paramHengine) {
-
-        N = 2000;
-
+    public TDicEA(HashEngine pHashEngine) {
+        N = Primo.primoMaiorqN(1<<4);
         conteudos = new Item[N];
-
-        hengine = paramHengine;
+        hengine = pHashEngine;
+        quant = 0;
     }
 
     public TDicEA() {
-
-        N = 2000;
-
+        N = Primo.primoMaiorqN(1<<4);
         conteudos = new Item[N];
-
         hengine = new HashEngineDefault();
+        quant = 0;
+    }
+
+    public TDicEA(int n){
+        hengine = new HashEngineDefault();
+        N = Primo.primoMaiorqN(n);
+        conteudos = new Item[N];
+        quant = 0;
     }
 
     private int encontraItem(Object k) {
@@ -63,10 +64,10 @@ public class TDicEA extends TADTabH{
         } while (j != pos);
 
         return -1;
-    } // fim encontraItem
+    }
 
     private void redimensiona() {
-        int NN = (int) (1.5 * N);
+        int NN = Primo.primoMaiorqN(N);
         Item[] novosConteudos = new Item[NN];
 
         int j = 0;
@@ -175,7 +176,8 @@ public class TDicEA extends TADTabH{
         }
     }
 
-    public Object removeElement(Object k) {
+    @Override
+    public Object removeElem(Object k) {
         int indice = encontraItem(k);
 
         if (indice == -1) {
@@ -188,6 +190,7 @@ public class TDicEA extends TADTabH{
         }
     } 
 
+    @Override
     public boolean isEmpty() {
         return quant == 0;
     } 
@@ -228,13 +231,4 @@ public class TDicEA extends TADTabH{
         return lstElements;
     } 
 
-    @Override
-    public Object removeElem(Object key) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public boolean empty() {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
 } 

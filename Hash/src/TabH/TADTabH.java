@@ -48,7 +48,7 @@ public abstract class TADTabH {
     public abstract Object findElem(Object key);
      
  
-    public boolean empty(){
+    public boolean isEmpty(){
         return getTamanho()==0;
     }
     public int size(){

@@ -1,61 +1,182 @@
 
 
-public class TMatNZ extends TADMatH{
+import java.io.InputStream;
+import java.io.FileInputStream;
 
-	public int linhas, colunas;
-	public int valor;
-	
-	public TMatNZ(int linhas, int colunas) {
-		super(linhas, colunas);
-		// TODO Auto-generated constructor stub
+
+import tadDicionario.TDicEA;
+
+public class TMatNZ implements IMat{
+
+	private int linhas, colunas;
+
+	private TDicEA matrixDicEA;
+
+	public TMatNZ(){
+		matrixDicEA = new TDicEA(linhas*colunas);
 	}
 
-	//TODO
-	//Deve funcionar como abaixo:
-	//TMatNZ mat = TMatNZ.carrega("mat.txt")
+
+	public TMatNZ(int linhas, int colunas){
+        this.linhas = linhas;
+		this.colunas = colunas;
+		matrixDicEA = new TDicEA(linhas*colunas);
+    }
+
+
+	public float getValorPosIJ(int i,int j){
+		String chave = i + "-" + j;
+		return (float)matrixDicEA.findElem(chave);
+		
+	}
+
+	public void addItemMatriz(int i,int j,float _valor){
+		
+		ElemMat elemMat = new ElemMat(i,j,_valor);
+		String chave = i + "-" + j;
+		matrixDicEA.insertItem(chave, elemMat);
+	}
+
+	@Override
+	public int getColunas() {
+		return this.colunas;
+	}
+	@Override
+	public int getLinhas() {
+		return linhas;
+	}
+
+	@Override
+	public void setLinhas(int linhas) {
+        this.linhas = linhas;
+	}
+	@Override
+	public void setColunas(int colunas) {
+        this.colunas = colunas;
+    }
+     
+
 	public static TMatNZ carrega(String nome_arq){
-		TMatNZ matriz = new TMatNZ(10, 20);
-		return matriz;
-	}
+		
+	    int i=0;
+		int j=0;
+		TMatNZ matNZ = new TMatNZ();
+		try {
+			InputStream entrada = new FileInputStream(nome_arq);
+	    int umByte = entrada.read();
 
-
-	@Override
-	public float getElem(int i, int j) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setElem(int i, int j, float pelem) {
-		// TODO Auto-generated method stub
+	    while(umByte != -1)
+	    {
+	    	String conteudo = "";
+	    	if((char)umByte!=' ' && (char)umByte!='\n' ){
+	        	while((char)umByte!=' ' && (char)umByte!='\n' ){
+	        		if((char)umByte==','){
+	        			umByte = '.';
+	        		}
+	        		conteudo = conteudo+""+(char)umByte;
+	        		
+	        		umByte = entrada.read();
+	        	}
+	        	
+				j++;
+	    	}
+	    	if(!conteudo.equals("")){
+	    		//System.out.println(conteudo);
+	    		matNZ.addItemMatriz(i, j-1,Float.parseFloat(conteudo) );
+	    	}
+	    	if((char)umByte=='\n'){
+	    		i++;
+	    		matNZ.colunas = j;
+	    		j = 0;
+	    	}
+	    
+	    	
+	    	umByte = entrada.read();
+	    }
+	    matNZ.linhas = i;
+		
+		return matNZ;
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return matNZ;
 		
 	}
 
+
 	@Override
-	public TADMatH multiplica(TADMatH mat) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-//todo
-	@Override
-	public void carregaMMF(String nomeArq) {
-		// TODO Auto-generated method stub
+	public String salva(String nome_arq) {
+		String matString = "";
 		
+		for (int i = 0; i < this.linhas; i++) {
+            for (int j = 0; j < this.colunas; j++) {
+                matString.concat(getValorPosIJ(i, j) + "  ");
+            }
+            matString.concat("");
+        }
+		return matString;
 	}
 
 	@Override
-	public void salvaMMF(String nomeArq) {
-		// TODO Auto-generated method stub
-		
+	public IMat multiplica(TMatNZ matrix) {
+		TMatNZ matrizResult = new TMatNZ(this.linhas, matrix.getColunas());
+     
+        for(int i=0;i<this.linhas;i++){
+            for(int x=0;x<matrix.getColunas();x++){
+                float acumulado = 0;
+                for(int j=0;j<this.colunas;j++){
+                    acumulado+= this.getValorPosIJ(i, j)*matrix.getValorPosIJ(j, x);
+                }
+                matrizResult.addItemMatriz(i, x, acumulado);
+            }
+        }
+        return matrizResult;
+    }
+
+	@Override
+	public IMat soma(TMatNZ matrix) {
+
+		if((matrix.getLinhas()!=this.getLinhas())||(matrix.getColunas()!=this.getColunas())){
+			return null;
+		}
+		TMatNZ matrizResult = new TMatNZ(this.linhas, matrix.getColunas());
+		for(int i = 0; i<this.linhas; i++){
+			for(int j=0; j<this.colunas; j++){
+				float acumulado = 0;
+				acumulado+= this.getValorPosIJ(i, j) + matrix.getValorPosIJ(i, j);
+
+				matrizResult.addItemMatriz(i, j, acumulado);
+			}	
+		}
+
+		return matrizResult;
 	}
 
 	@Override
-	public boolean equals(TADMatH pMat) {
-		// TODO Auto-generated method stub
-		return false;
+	public IMat transposta() {
+		TMatNZ transposta = new TMatNZ(this.getColunas(), this.getLinhas());
+		for(int i = 0; i<this.linhas; i++){
+			for(int j=0; j<this.colunas; j++){
+				transposta.addItemMatriz(j, i, this.getValorPosIJ(i, j));
+			}
+		}
+		return transposta;
 	}
-	
-	
-	
+
+	@Override
+	public TMatNZ vezesK(int k) {
+		TMatNZ matrizResult = new TMatNZ(this.getLinhas(), this.getColunas());
+		for(int i = 0; i<this.linhas; i++){
+			for(int j=0; j<this.colunas; j++){
+				float acumulado = 0;
+				acumulado+= this.getValorPosIJ(i, j) * k;
+				matrizResult.addItemMatriz(i, j, acumulado);
+			}	
+		}
+
+		return matrizResult;
+	}
+
 	
 }
