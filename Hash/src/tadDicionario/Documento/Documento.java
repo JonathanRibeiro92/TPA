@@ -65,6 +65,7 @@ public class Documento implements IDocumento{
                 strTabFreq.concat(";");
                 strTabFreq.concat(tabFreq.findElem(k).toString());
             }
+		return strTabFreq;
 
 
 		} catch (IOException e) {
