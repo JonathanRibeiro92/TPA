@@ -119,7 +119,7 @@ public class TMatNZ implements IMat{
 	}
 
 	@Override
-	public IMat multiplica(TMatNZ matrix) {
+	public TMatNZ multiplica(TMatNZ matrix) {
 		TMatNZ matrizResult = new TMatNZ(this.linhas, matrix.getColunas());
      
         for(int i=0;i<this.linhas;i++){
@@ -135,7 +135,7 @@ public class TMatNZ implements IMat{
     }
 
 	@Override
-	public IMat soma(TMatNZ matrix) {
+	public TMatNZ soma(TMatNZ matrix) {
 
 		if((matrix.getLinhas()!=this.getLinhas())||(matrix.getColunas()!=this.getColunas())){
 			return null;
@@ -154,7 +154,7 @@ public class TMatNZ implements IMat{
 	}
 
 	@Override
-	public IMat transposta() {
+	public TMatNZ transposta() {
 		TMatNZ transposta = new TMatNZ(this.getColunas(), this.getLinhas());
 		for(int i = 0; i<this.linhas; i++){
 			for(int j=0; j<this.colunas; j++){

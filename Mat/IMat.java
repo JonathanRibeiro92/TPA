@@ -8,9 +8,9 @@ public interface IMat {
     
     //IMat carrega(String nome_arq);
     String salva(String nome_arq);
-    IMat multiplica(TMatNZ matrix);
-    IMat soma(TMatNZ matrix);
-    IMat transposta();
-    IMat vezesK(int value);
+    TMatNZ multiplica(TMatNZ matrix);
+    TMatNZ soma(TMatNZ matrix);
+    TMatNZ transposta();
+    TMatNZ vezesK(int value);
 
 }
