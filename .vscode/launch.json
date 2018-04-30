@@ -1,0 +1,92 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Run<Hash>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "hashFunctions.Run",
+            "projectName": "Hash",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Romanos<Hash>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "romanos.Romanos",
+            "projectName": "Hash",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-FuncoesRecursivas<Rev-Recursividade>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "FuncoesRecursivas",
+            "projectName": "Rev-Recursividade",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Run<TPA>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "hashFunctions.Run",
+            "projectName": "TPA",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-Romanos<TPA>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "romanos.Romanos",
+            "projectName": "TPA",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-FuncoesRecursivas<TPA>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "FuncoesRecursivas",
+            "projectName": "TPA",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Launch)-AppMat<TPA>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "console": "internalConsole",
+            "stopOnEntry": false,
+            "mainClass": "AppMat",
+            "projectName": "TPA",
+            "args": ""
+        },
+        {
+            "type": "java",
+            "name": "Debug (Attach)",
+            "request": "attach",
+            "hostName": "localhost",
+            "port": 0
+        }
+    ]
+}

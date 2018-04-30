@@ -12,7 +12,7 @@ public class Romanos{
     private static String[] vRom = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
 
-    private static TDicEA dicRomanos;
+    private TDicEA dicRomanos;
 
 
     public Romanos(String nr) {
