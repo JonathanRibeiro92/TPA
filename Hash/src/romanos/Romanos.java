@@ -1,5 +1,7 @@
 package romanos;
 
+import tadDicionario.TDicEA;
+
 //"MMMCMXCIX"
 
 public class Romanos{
@@ -10,8 +12,16 @@ public class Romanos{
     private static String[] vRom = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
 
 
+    private static TDicEA dicRomanos;
+
+
     public Romanos(String nr) {
+        
         this.nr = nr;
+        this.dicRomanos = new TDicEA(13);
+        for(int i=0; i<vNum.length;i++){
+            dicRomanos.insertItem(vNum[i],vRom[i]);
+        }
     }
 
     public boolean isromano(String str){
@@ -115,6 +125,9 @@ public class Romanos{
     }
 
     public static void main(String[] args) {
-
+        Romanos romano = new Romanos("");
+        romano.toRomano(10);
+        System.out.println(romano.nr);
     }
+
 }
