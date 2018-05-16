@@ -1,11 +1,11 @@
 package tadDicionario;
 
-import TabH.TADTabH;
+import TabH.TDic;
 import java.util.LinkedList;
 import TabH.Item;
 import hashFunctions.*;
 //TODO
-public class TDicEA extends TADTabH{
+public class TDicEA extends TDic{
 
     public static final Item NO_SUCH_KEY = new Item(null, null);
     private static final Item DISPONIVEL = new Item(null, null);
@@ -166,7 +166,7 @@ public class TDicEA extends TADTabH{
 
     }
 
-    public Object findElem(Object k) {
+    public Object findElement(Object k) {
         int indice = encontraItem(k);
 
         if (indice == -1) {
@@ -175,6 +175,8 @@ public class TDicEA extends TADTabH{
             return conteudos[indice].getElement();
         }
     }
+
+
 
     @Override
     public Object removeElem(Object k) {
@@ -229,6 +231,11 @@ public class TDicEA extends TADTabH{
         } 
 
         return lstElements;
-    } 
+    }
+
+	@Override
+	public int findElem(Object key) {
+		return 0;
+	} 
 
 } 

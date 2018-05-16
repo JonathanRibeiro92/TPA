@@ -5,8 +5,6 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
-import java.util.LinkedList;
-import java.util.Random;
 import java.io.IOException;
 import java.lang.Math;
 import java.math.BigInteger;

@@ -1,5 +1,6 @@
 package tadPolinomio;
 
+import TabH.TDic;
 import tadDicionario.*;
 
 public class TADPoli{
@@ -21,7 +22,7 @@ public class TADPoli{
     
     
     
-    for(int i =1; i<strpoli.lenght(); i++){
+    for(int i =1; i<strpoli.length(); i++){
       if((strpoli.charAt(i) != '+') || (strpoli.charAt(i) != '-')){
         strmono = strmono + strpoli.charAt(i);
         
@@ -41,17 +42,17 @@ public class TADPoli{
           else {
            if((v[0]!= "") && (v[1] =="")){
             coef = Float.parseFloat(v[0]);
-            grau = Integer.parseInt(1);
+            grau = Integer.parseInt("1");
            }
             else{
-              coef = Float.parseFloat(1.0f);
+              coef = Float.parseFloat("1.0f");
               grau = Integer.parseInt(v[1]);
             }
           }
         }
         else{
          coef = Float.parseFloat(v[0]);
-         grau = Integer.parseInt(0);
+         grau = Integer.parseInt("0");
           
         }
         if(sinal =='-')
@@ -69,3 +70,4 @@ public class TADPoli{
     
     
   }
+}

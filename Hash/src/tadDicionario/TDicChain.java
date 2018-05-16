@@ -2,7 +2,9 @@ package tadDicionario;
 
 import java.util.LinkedList;
 
+import TabH.TDic;
 import hashFunctions.HashEngine;
+import hashFunctions.HashEngineDefault;
 import tadDicionario.Primo;
 
 class TItemDic{
@@ -39,14 +41,23 @@ class TItemDic{
 	
 }
 
-public class TDicChain {
+public class TDicChain extends TDic{
 
 	private int quant_entradas;
 	private LinkedList<TItemDic> []vet_conteudo = null;
 	private int tam_vet_conteudo = 0;
 	private HashEngine he;
 	
-	
+	public TDicChain() {
+        this.he = new HashEngineDefault();
+        this.tam_vet_conteudo = 1<<4;
+        vet_conteudo = new LinkedList[this.tam_vet_conteudo];
+        for(int i=0; i < tam_vet_conteudo; i++) {
+			vet_conteudo[i] = new LinkedList<TItemDic>();
+		}
+}
+
+
 
 	public TDicChain(int tam_vet, HashEngine he) {
 		tam_vet_conteudo = Primo.primoMaiorqN(tam_vet);
@@ -163,6 +174,26 @@ public class TDicChain {
 	}
 	
 	public Object getItens(){
+		return null;
+	}
+
+	@Override
+	public int findElem(Object key) {
+		return 0;
+	}
+
+	@Override
+	public Object removeElem(Object chave) {
+		return null;
+	}
+
+	@Override
+	public LinkedList keys() {
+		return null;
+	}
+
+	@Override
+	public LinkedList elements() {
 		return null;
 	}
 	

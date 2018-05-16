@@ -3,14 +3,14 @@ package TabH;
 import java.util.LinkedList;
 import hashFunctions.*;
 
-public abstract class TADTabH {
+public abstract class TDic {
      
     private static Item NO_SUCH_KEY = new Item(null,null);
     private int tamanho;
     private final HashEngine hengine;
     protected int colisoes[];
      
-    public TADTabH(){
+    public TDic(){
         this.hengine = new HashEngineDefault();
         this.tamanho = 100;
         colisoes = new int [tamanho];
@@ -20,7 +20,7 @@ public abstract class TADTabH {
         }
     }
      
-    public TADTabH(int tam,HashEngine hE){
+    public TDic(int tam,HashEngine hE){
         hengine=hE;
         this.tamanho = tam;
         colisoes = new int [tamanho];
@@ -30,7 +30,7 @@ public abstract class TADTabH {
         }
     }
      
-    public TADTabH(HashEngine hE){
+    public TDic(HashEngine hE){
         hengine = hE;
         tamanho = 100;
          
@@ -45,7 +45,7 @@ public abstract class TADTabH {
         return tamanho;
     }
      
-    public abstract Object findElem(Object key);
+    public abstract int findElem(Object key);
      
  
     public boolean isEmpty(){
