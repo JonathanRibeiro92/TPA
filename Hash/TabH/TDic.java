@@ -1,7 +1,8 @@
-package TabH;
+package Hash.TabH;
+
+import Hash.hashFunctions.*;
 
 import java.util.LinkedList;
-import hashFunctions.*;
 
 public abstract class TDic {
      
@@ -45,7 +46,7 @@ public abstract class TDic {
         return tamanho;
     }
      
-    public abstract int findElem(Object key);
+    public abstract Object findElement(Object k);
      
  
     public boolean isEmpty(){

@@ -1,4 +1,4 @@
-package tadDicionario;
+package Hash.tadDicionario;
 public class Primo {
 
     private static boolean isprimo(int n)

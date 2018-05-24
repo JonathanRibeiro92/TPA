@@ -1,12 +1,11 @@
-package tadDicionario.Documento;
+package Hash.tadDicionario.Documento;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import hashFunctions.HashEngineDefault;
-import tadDicionario.TDicChain;
-import tadDicionario.TDicEA;
+import Hash.hashFunctions.HashEngineDefault;
+import Hash.tadDicionario.TDicEA;
 
 public class Documento implements IDocumento{
     
@@ -63,7 +62,7 @@ public class Documento implements IDocumento{
             for (Object k : documento.tabFreq.keys()) {
                 strTabFreq.concat(k.toString());
                 strTabFreq.concat(";");
-                strTabFreq.concat(tabFreq.findElem(k).toString());
+                strTabFreq.concat((tabFreq.findElement(k).toString()));
             }
 		return strTabFreq;
 

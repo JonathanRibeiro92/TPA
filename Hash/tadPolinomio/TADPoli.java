@@ -1,7 +1,7 @@
-package tadPolinomio;
+package Hash.tadPolinomio;
 
-import TabH.TDic;
-import tadDicionario.*;
+import Hash.TabH.TDic;
+import Hash.tadDicionario.*;
 
 public class TADPoli{
   
