@@ -70,6 +70,9 @@ class Edge{
         this.dado = dado;
     }
 
+    public Edge(Object d){
+        this.setDado(d);
+    }
 
 
 
@@ -88,11 +91,19 @@ public class TGrafoNDMAd{
 
     //Dicionário label x linha/coluna matriz: chave label do vértice,
     // conteúdo int com número da linha/coluna da matriz
-    private TDic dicVertexLblInt = new TDicChain();
+    private TDic dicVertexLblId = new TDicChain();
+    private TDic dicVertexIdLbl = new TDicChain();
 
-    private TDic dicVertexIntLbl = new TDicChain();
+    private TDic dicEdgeLblId = new TDicChain();
+    private TDic dicEdgeIdLbl = new TDicChain();
 
+    private TDic dicVertexDels = new TDicChain();
+    private TDic dicEdgeDels = new TDicChain();
 
+    private LinkedList<Integer> lstVtxDeletados = new LinkedList();
+
+    private int globalID = 0 ;
+    private int globalVertexID = 0;
     private String matrix[][];
     /*
     * INTERFACE PRIVADA DO GRAFO
@@ -135,8 +146,8 @@ public class TGrafoNDMAd{
     }
 
     public Object getEdge(String u, String v){
-        Integer linha = (Integer)dicVertexLblInt.findElement(u);
-        Integer coluna = (Integer)dicVertexLblInt.findElement(v);
+        Integer linha = (Integer) dicVertexLblId.findElement(u);
+        Integer coluna = (Integer) dicVertexLblId.findElement(v);
 
         return matrix[linha][coluna];
     }
@@ -146,8 +157,8 @@ public class TGrafoNDMAd{
         for (int i = 0; i< tam; i++){
             for(int j = 0; j < tam; j++){
                 if(matrix[i][j].equals(e)){
-                    String labelV = (String)dicVertexIntLbl.findElement(i);
-                    String labelU = (String)dicVertexIntLbl.findElement(j);
+                    String labelV = (String) dicVertexIdLbl.findElement(i);
+                    String labelU = (String) dicVertexIdLbl.findElement(j);
                     return new String[] {labelU,labelV};
                 }
             }
@@ -177,12 +188,109 @@ public class TGrafoNDMAd{
     }
 
 
+    private int geraIDVtx(){
+        if(lstVtxDeletados.size() > 0){
+            int id = lstVtxDeletados.get(0);
+            lstVtxDeletados.remove(0);
+            return id;
+        }
+        else
+            return globalVertexID++;
+    }
+
+
     public Vertex insertVertex(Object x){
         Vertex v = new Vertex(x);
 
-        dicVertexes.insertItem(k,v);
+        v.setId(globalID++);
+        v.setLabel(String.valueOf(globalID));
 
-        return null;
+
+        dicVertexes.insertItem(v.getLabel(),v);
+        dicVertexLblId.insertItem(v.getLabel(),v.getId());
+        dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+
+
+
+        return v;
+    }
+
+
+    public Edge insertEdge(Vertex u, Vertex v, Object x){
+        if((dicVertexLblId.findElement(u.getLabel()).equals(null))
+                || (dicVertexLblId.findElement(v.getLabel()).equals(null)))
+            return null;
+
+        //cria o objeto edge (aresta)
+        Edge e = new Edge(x);
+
+        e.setId(globalID++);
+        e.setLabel(String.valueOf(globalID));
+
+
+        dicEdges.insertItem(e.getLabel(),e);
+        dicEdgeLblId.insertItem(e.getLabel(),e.getId());
+        dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
+
+        //associa a aresta aos seus endpoints (vertices).
+        int linha = u.getId();
+        int coluna = v.getId();
+        //porque é um grafo não dirigido (matriz é simétrica)
+        matrix[linha][coluna] = e.getLabel();
+        matrix[coluna][linha] = e.getLabel();
+
+        return e;
+    }
+
+
+    private Object removeVertex(Vertex v){
+        Object tmp = v.getDado();
+        lstVtxDeletados.add(v.getId());
+
+
+        int linha = v.getId();
+        int limiteCol = dicVertexes.size();
+
+        for(int i = 0; i < limiteCol; i++){
+            if( !lstVtxDeletados.contains(i)) {
+                String lblEdge = matrix[linha][i];
+
+                dicEdges.removeElem(lblEdge);
+                int idEdge = (int) dicEdgeLblId.removeElem(lblEdge);
+                dicEdgeIdLbl.removeElem(idEdge);
+                //porque é um grafo não dirigido (matriz é simétrica)
+                matrix[linha][i] = null;
+                matrix[i][linha] = null;
+            }
+        }
+
+
+        return tmp;
+    }
+
+
+    private Object removeEdge(Edge e){
+        Object tmp = e.getDado();
+
+
+        String lblEdge = e.getLabel();
+
+        dicEdges.removeElem(lblEdge);
+        int idEdge = (int)dicEdgeLblId.removeElem(lblEdge);
+        dicEdgeIdLbl.removeElem(idEdge);
+
+        String [] endPoints = endVertices(e.getLabel());
+
+        //asocia a aresta aos seus endpoints (vertices)
+        int linha = (int)dicVertexLblId.findElement(endPoints[0]);
+        int coluna = (int)dicVertexLblId.findElement(endPoints[1]);
+        //porque é um grafo não dirigido (matriz é simétrica)
+        matrix[linha][coluna] = null;
+        matrix[coluna][linha] = null;
+
+
+
+        return tmp;
     }
 
 }
