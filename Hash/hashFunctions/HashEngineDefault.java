@@ -1,4 +1,4 @@
-package Hash.hashFunctions;
+package hashFunctions;
 
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;

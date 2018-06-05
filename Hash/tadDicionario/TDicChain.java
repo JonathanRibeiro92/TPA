@@ -1,11 +1,11 @@
-package Hash.tadDicionario;
+package tadDicionario;
 
 import java.util.LinkedList;
 
-import Hash.TabH.TDic;
-import Hash.hashFunctions.HashEngine;
-import Hash.hashFunctions.HashEngineDefault;
-import Hash.tadDicionario.Primo;
+import TabH.TDic;
+import hashFunctions.HashEngine;
+import hashFunctions.HashEngineDefault;
+import tadDicionario.Primo;
 
 class TItemDic{
 	private Object key = null;

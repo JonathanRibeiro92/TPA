@@ -1,4 +1,4 @@
-package Hash.TabH;
+package TabH;
 
 public class Item {
 	 

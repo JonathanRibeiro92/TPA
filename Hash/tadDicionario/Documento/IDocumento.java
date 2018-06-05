@@ -1,7 +1,7 @@
-package Hash.tadDicionario.Documento;
+package tadDicionario.Documento;
 
-import Hash.tadDicionario.TDicChain;
-import Hash.tadDicionario.TDicEA;
+import tadDicionario.TDicChain;
+import tadDicionario.TDicEA;
 
 public interface IDocumento{
     

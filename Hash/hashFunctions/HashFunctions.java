@@ -1,4 +1,4 @@
-package Hash.hashFunctions;
+package hashFunctions;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

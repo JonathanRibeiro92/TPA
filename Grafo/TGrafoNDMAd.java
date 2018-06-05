@@ -1,7 +1,7 @@
 package Grafo;
 
-import Hash.TabH.TDic;
-import Hash.tadDicionario.TDicChain;
+import TabH.TDic;
+import tadDicionario.TDicChain;
 import java.util.LinkedList;
 
 class Vertex{
