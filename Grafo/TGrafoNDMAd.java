@@ -1,6 +1,7 @@
 package Grafo;
 
 import TabH.TDic;
+import javafx.collections.transformation.TransformationList;
 import tadDicionario.TDicChain;
 import java.util.LinkedList;
 
@@ -104,7 +105,12 @@ public class TGrafoNDMAd{
 
     private int globalID = 0 ;
     private int globalVertexID = 0;
+    private int globalEdgeID = 0;
     private String matrix[][];
+
+    private int primIndexMatrix = 0;
+    private int ultimIndexMatrix = 0;
+
     /*
     * INTERFACE PRIVADA DO GRAFO
     */
@@ -125,6 +131,8 @@ public class TGrafoNDMAd{
                 matrix[i][j] = null;
             }
         }
+        primIndexMatrix = -1;
+        ultimIndexMatrix = -1;
 
     }
 
@@ -202,8 +210,15 @@ public class TGrafoNDMAd{
     public Vertex insertVertex(Object x){
         Vertex v = new Vertex(x);
 
-        v.setId(globalID++);
+        v.setId(geraIDVtx());
         v.setLabel(String.valueOf(globalID));
+
+
+        if ((v.getId() < primIndexMatrix) ||(primIndexMatrix == -1)) {
+            primIndexMatrix = v.getId();
+        }
+        if((v.getId() > ultimIndexMatrix))
+            ultimIndexMatrix = v.getId();
 
 
         dicVertexes.insertItem(v.getLabel(),v);
@@ -224,8 +239,8 @@ public class TGrafoNDMAd{
         //cria o objeto edge (aresta)
         Edge e = new Edge(x);
 
-        e.setId(globalID++);
-        e.setLabel(String.valueOf(globalID));
+        e.setId(globalEdgeID++);
+        e.setLabel(String.valueOf(globalEdgeID));
 
 
         dicEdges.insertItem(e.getLabel(),e);
@@ -250,6 +265,15 @@ public class TGrafoNDMAd{
 
         int linha = v.getId();
         int limiteCol = dicVertexes.size();
+
+//TODO loop para encontrar o primeiro e último
+        /*
+        if((v.getId() == primIndexMatrix))
+            primIndexMatrix = 0;
+
+        if(v.getId() == ultimIndexMatrix)
+            ultimIndexMatrix = 0;
+        */
 
         for(int i = 0; i < limiteCol; i++){
             if( !lstVtxDeletados.contains(i)) {
@@ -292,5 +316,34 @@ public class TGrafoNDMAd{
 
         return tmp;
     }
+
+    public LinkedList <Vertex> adjacentVertices(Vertex v){
+
+        if(dicVertexes.findElement(v) == null)
+            return null;
+
+        LinkedList<Vertex> lst = new LinkedList<Vertex>();
+        int linha = v.getId();
+
+        for (int i = primIndexMatrix; i <= ultimIndexMatrix ; i++) {
+            if(!lstVtxDeletados.contains(i) && matrix[linha][i] != null){
+                String labelU = (String)dicVertexIdLbl.findElement(i);
+                lst.add((Vertex) dicVertexes.findElement(labelU));
+            }
+        }
+
+
+
+        return lst;
+    }
+
+    public boolean areaAdjacent(Vertex u, Vertex v){
+
+        int linha = u.getId();
+        int coluna = v.getId();
+
+        return matrix[linha][coluna] != null;
+    }
+
 
 }
