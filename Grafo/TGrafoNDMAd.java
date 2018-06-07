@@ -1,5 +1,6 @@
 package Grafo;
 
+import Hash.tadDicionario.Documento.ArquivoTxt;
 import TabH.TDic;
 import javafx.collections.transformation.TransformationList;
 import tadDicionario.TDicChain;
@@ -83,6 +84,10 @@ class Edge{
 
 
 public class TGrafoNDMAd{
+
+    /*
+    * INTERFACE PRIVADA DO GRAFO
+    */
     private static final int TAM_DEFAULT = 64;
 
 
@@ -111,9 +116,30 @@ public class TGrafoNDMAd{
     private int primIndexMatrix = 0;
     private int ultimIndexMatrix = 0;
 
-    /*
-    * INTERFACE PRIVADA DO GRAFO
-    */
+    private int geraIDVtx(){
+        if(lstVtxDeletados.size() > 0){
+            int id = lstVtxDeletados.get(0);
+            lstVtxDeletados.remove(0);
+            return id;
+        }
+        else
+            return globalVertexID++;
+    }
+
+    private void redimensiona(){
+        int novoTam = (int)(matrix[0].length * 1.5f);
+        String novaMat[][] = new String[novoTam][novoTam];
+
+
+        for (int i = primIndexMatrix; i <= ultimIndexMatrix ; i++) {
+            for (int j = primIndexMatrix; j <=ultimIndexMatrix ; j++) {
+                novaMat[i][j] = matrix[i][j];
+            }
+        }
+
+        matrix = novaMat;
+
+    }
 
 
     /*
@@ -196,18 +222,14 @@ public class TGrafoNDMAd{
     }
 
 
-    private int geraIDVtx(){
-        if(lstVtxDeletados.size() > 0){
-            int id = lstVtxDeletados.get(0);
-            lstVtxDeletados.remove(0);
-            return id;
-        }
-        else
-            return globalVertexID++;
-    }
+
 
 
     public Vertex insertVertex(Object x){
+
+        if(dicVertexes.size()/matrix[0].length >= 0.75f)
+            redimensiona();
+
         Vertex v = new Vertex(x);
 
         v.setId(geraIDVtx());
@@ -352,6 +374,100 @@ public class TGrafoNDMAd{
         int coluna = v.getId();
 
         return matrix[linha][coluna] != null;
+    }
+
+    /*
+    *  Exemplo de uso:
+    *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+    * */
+    public static TGrafoNDMAd carrega(String nome_arq_TGF){
+        TGrafoNDMAd g = new TGrafoNDMAd();
+
+        ArquivoTxT arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+
+        /* lendo os vertices */
+        String linha = arq.readline();
+        while (!linha.equals("#")){
+            String[] vet = linha.split(" ", 1);
+            Vertex v = g.insertVertex(null);
+
+            v.setLabel(vet[1]);
+        }
+
+        /* lendo as arestas */
+        linha = arq.readline();
+        while (linha!= null){
+            String[] edges = linha.split(" ", 2);
+
+            String lblU = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[0]) - 1);
+            String lblV = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[1]) - 1);
+
+            Vertex u = (Vertex)g.dicVertexes.findElement(lblU);
+            Vertex v = (Vertex)g.dicVertexes.findElement(lblV);
+
+            Edge e = g.insertEdge(u,v,null);
+
+            if(e==null)
+                return null;
+            else{
+                if(edges.length==3)
+                    e.setLabel(edges[2]);
+            }
+
+
+        }
+
+        arq.close();
+
+        return g;
+
+    }
+
+    public String salva(String nome_arq_TGF){
+
+        ArquivoTxT arq = ArquivoTxt.open(nome_arq_TGF, "wt");
+        TDic dicIDgrafoID_tgf = new TDicChain();
+        /* Escrevendo os vertices */
+
+        int id = 1;
+
+        String linha = null;
+
+        for(int i = primIndexMatrix; i<=ultimIndexMatrix; i++){
+            if(!lstVtxDeletados.contains(i)){
+                linha = id + " " + (String)dicVertexIdLbl.findElement(i);
+                arq.writeline(linha);
+
+                dicIDgrafoID_tgf.insertItem(i,id);
+
+                id++;
+            }
+        }
+        arq.writeline("#");
+
+
+        /* escrevendo as arestas */
+        for(int lin = primIndexMatrix; lin<=ultimIndexMatrix; lin++){
+            if(!lstVtxDeletados.contains(lin)){
+                for (int col = primIndexMatrix; col <= ultimIndexMatrix; col++){
+                    if(!lstVtxDeletados.contains(col)){
+                        if(matrix[lin][col] != null){
+                            int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
+                            int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
+                            linha = tgf_lin + " " + tgf_lin + " " + matrix[lin][col];
+                        }
+                    }
+                }
+            }
+        }
+
+
+        arq.close();
+
+        return nome_arq_TGF;
+
+
+
     }
 
 
