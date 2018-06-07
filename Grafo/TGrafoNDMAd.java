@@ -269,10 +269,19 @@ public class TGrafoNDMAd{
 //TODO loop para encontrar o primeiro e último
         /*
         if((v.getId() == primIndexMatrix))
+            for(int i = 0; i < limiteCol; i++){
+                if(matrix[linha][i]!= null){
+                    primIndexMatrix = i;
+                }
+            }
             primIndexMatrix = 0;
 
         if(v.getId() == ultimIndexMatrix)
-            ultimIndexMatrix = 0;
+            for(int i = limiteCol; i > -1; i--){
+                if(matrix[linha][i]!= null){
+                    ultimIndexMatrix = i;
+                }
+            }
         */
 
         for(int i = 0; i < limiteCol; i++){
