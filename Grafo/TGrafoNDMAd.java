@@ -1,6 +1,6 @@
 package Grafo;
 
-import Hash.tadDicionario.Documento.ArquivoTxt;
+import tadDicionario.Documento.ArquivoTxt;
 import TabH.TDic;
 import javafx.collections.transformation.TransformationList;
 import tadDicionario.TDicChain;
@@ -126,6 +126,31 @@ public class TGrafoNDMAd{
             return globalVertexID++;
     }
 
+    private int firstLinhaColUtil(){
+        int i = primIndexMatrix+1;
+        while(lstVtxDeletados.contains(i) && (i<= ultimIndexMatrix))
+            i=i+1;
+        if(!lstVtxDeletados.contains(i))
+            return i;
+
+        return ultimIndexMatrix;
+    }
+
+
+    private int lastLinhaColUtil(){
+        int i = ultimIndexMatrix - 1;
+        while(lstVtxDeletados.contains(i) && (i>= primIndexMatrix))
+            i = i-1;
+
+        if(!lstVtxDeletados.contains(i))
+            return i;
+
+        return primIndexMatrix;
+    }
+
+
+
+
     private void redimensiona(){
         int novoTam = (int)(matrix[0].length * 1.5f);
         String novaMat[][] = new String[novoTam][novoTam];
@@ -236,10 +261,10 @@ public class TGrafoNDMAd{
         v.setLabel(String.valueOf(globalID));
 
 
-        if ((v.getId() < primIndexMatrix) ||(primIndexMatrix == -1)) {
+        if ((v.getId() < firstLinhaColUtil()) ||(firstLinhaColUtil() == -1)) {
             primIndexMatrix = v.getId();
         }
-        if((v.getId() > ultimIndexMatrix))
+        if((v.getId() > lastLinhaColUtil()))
             ultimIndexMatrix = v.getId();
 
 
@@ -383,7 +408,7 @@ public class TGrafoNDMAd{
     public static TGrafoNDMAd carrega(String nome_arq_TGF){
         TGrafoNDMAd g = new TGrafoNDMAd();
 
-        ArquivoTxT arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 
         /* lendo os vertices */
         String linha = arq.readline();
@@ -425,7 +450,7 @@ public class TGrafoNDMAd{
 
     public String salva(String nome_arq_TGF){
 
-        ArquivoTxT arq = ArquivoTxt.open(nome_arq_TGF, "wt");
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "wt");
         TDic dicIDgrafoID_tgf = new TDicChain();
         /* Escrevendo os vertices */
 
@@ -455,6 +480,8 @@ public class TGrafoNDMAd{
                             int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
                             int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
                             linha = tgf_lin + " " + tgf_lin + " " + matrix[lin][col];
+
+                            arq.writeline(linha);
                         }
                     }
                 }
@@ -466,6 +493,53 @@ public class TGrafoNDMAd{
 
         return nome_arq_TGF;
 
+
+
+    }
+
+    public void toStr(){
+
+        TDic dicIDgrafoID_tgf = new TDicChain();
+        /* Escrevendo os vertices */
+        String strGrafo = "";
+        int id = 1;
+
+        String linha = null;
+
+        for(int i = this.primIndexMatrix; i<= this.ultimIndexMatrix; i++){
+            if(!lstVtxDeletados.contains(i)){
+                linha = id + " " + (String)dicVertexIdLbl.findElement(i);
+                strGrafo.concat(linha);
+                strGrafo.concat("\n");
+
+                dicIDgrafoID_tgf.insertItem(i,id);
+
+                id++;
+            }
+        }
+        strGrafo.concat("#");
+        strGrafo.concat("\n");
+
+
+        /* escrevendo as arestas */
+        for(int lin = primIndexMatrix; lin<=ultimIndexMatrix; lin++){
+            if(!lstVtxDeletados.contains(lin)){
+                for (int col = primIndexMatrix; col <= ultimIndexMatrix; col++){
+                    if(!lstVtxDeletados.contains(col)){
+                        if(matrix[lin][col] != null){
+                            int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
+                            int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
+                            linha = tgf_lin + " " + tgf_lin + " " + matrix[lin][col];
+                            strGrafo.concat(linha);
+                            strGrafo.concat("\n");
+                        }
+                    }
+                }
+            }
+        }
+
+
+        System.out.println(strGrafo);
 
 
     }

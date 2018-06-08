@@ -1,4 +1,4 @@
-package Hash.tadDicionario.Documento;
+package tadDicionario.Documento;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
