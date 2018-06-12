@@ -412,20 +412,33 @@ public class TGrafoNDMAd{
 
         /* lendo os vertices */
         String linha = arq.readline();
-        while (!linha.equals("#")){
-            String[] vet = linha.split(" ", 1);
+        while (!linha.trim().equals("#")){
+            String[] vet = linha.split(" ", 2);
             Vertex v = g.insertVertex(null);
 
+
+
+            g.dicVertexes.removeElem(v.getLabel());
+            g.dicVertexLblId.removeElem(v.getLabel());
+            g.dicVertexIdLbl.removeElem(v.getId());
+
+
+
             v.setLabel(vet[1]);
+            g.dicVertexes.insertItem(v.getLabel(),v);
+            g.dicVertexLblId.insertItem(v.getLabel(),v.getId());
+            g.dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+
+            linha = arq.readline();
         }
 
         /* lendo as arestas */
         linha = arq.readline();
-        while (linha!= null){
-            String[] edges = linha.split(" ", 2);
+        while (linha.trim()!= null){
+            String[] edges = linha.split(" ", 3);
 
-            String lblU = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[0]) - 1);
-            String lblV = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[1]) - 1);
+            String lblU = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[0].trim()) - 1);
+            String lblV = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[1].trim()) - 1);
 
             Vertex u = (Vertex)g.dicVertexes.findElement(lblU);
             Vertex v = (Vertex)g.dicVertexes.findElement(lblV);
@@ -435,10 +448,23 @@ public class TGrafoNDMAd{
             if(e==null)
                 return null;
             else{
+                g.dicEdges.removeElem(e.getLabel());
+                g.dicEdgeLblId.removeElem(e.getLabel());
+                g.dicEdgeIdLbl.removeElem(e.getId());
+
                 if(edges.length==3)
                     e.setLabel(edges[2]);
-            }
+                else{
+                    e.setLabel("@#" + e.getId());
+                }
 
+                g.dicEdges.insertItem(e.getLabel(),e);
+                g.dicEdgeLblId.insertItem(e.getLabel(),e.getId());
+                g.dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
+
+                
+            }
+            linha = arq.readline();
 
         }
 
@@ -529,7 +555,11 @@ public class TGrafoNDMAd{
                         if(matrix[lin][col] != null){
                             int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
                             int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
-                            linha = tgf_lin + " " + tgf_lin + " " + matrix[lin][col];
+
+                            if(!matrix[lin][col].substring(0,2).equals("@#"))
+                                linha = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
+                            else
+                                linha = tgf_lin + " " + tgf_col;
                             strGrafo.concat(linha);
                             strGrafo.concat("\n");
                         }
