@@ -39,6 +39,11 @@ class Vertex{
         this.setDado(d);
     }
 
+    public Vertex(int id, String label, Object object){
+        this.id = id;
+        this.label= label;
+        this.dado = object;
+    }
 
 
 }
@@ -114,7 +119,7 @@ public class TGrafoNDMAd{
     private String matrix[][];
 
     private int primIndexMatrix = 0;
-    private int ultimIndexMatrix = 0;
+    private int ultimIndexMatrix = -1;
 
     private int geraIDVtx(){
         if(lstVtxDeletados.size() > 0){
@@ -187,6 +192,20 @@ public class TGrafoNDMAd{
 
     }
 
+
+    public TGrafoNDMAd(int n){
+        matrix = new String[n][n];
+        for(int i = 0; i<n; i++){
+            for (int j= 0; j <n; j++){
+                matrix[i][j] = null;
+            }
+        }
+        primIndexMatrix = -1;
+        ultimIndexMatrix = -1;
+    }
+
+
+
     public int numVertices(){
         return dicVertexes.size();
     }
@@ -204,21 +223,30 @@ public class TGrafoNDMAd{
         return dicEdges.keys();
     }
 
-    public Object getEdge(String u, String v){
+    public Object getEdge(String u, String v) {
         Integer linha = (Integer) dicVertexLblId.findElement(u);
-        Integer coluna = (Integer) dicVertexLblId.findElement(v);
 
-        return matrix[linha][coluna];
+        if (linha != null) {
+            Integer coluna = (Integer) dicVertexLblId.findElement(v);
+            if (coluna != null) {
+                return matrix[linha][coluna];
+            }
+        }
+        return null;
     }
 
     public String[] endVertices(String e){
         int tam = numVertices();
-        for (int i = 0; i< tam; i++){
-            for(int j = 0; j < tam; j++){
-                if(matrix[i][j].equals(e)){
+        for (int i = 0; i< tam; i++) {
+            for (int j = 0; j < tam; j++) {
+                if (matrix[i][j].equals(e)) {
                     String labelV = (String) dicVertexIdLbl.findElement(i);
-                    String labelU = (String) dicVertexIdLbl.findElement(j);
-                    return new String[] {labelU,labelV};
+                    if (!labelV.equals("")) {
+                        String labelU = (String) dicVertexIdLbl.findElement(j);
+                        if (!labelU.equals("")) {
+                            return new String[]{labelU, labelV};
+                        }
+                    }
                 }
             }
         }
@@ -275,6 +303,32 @@ public class TGrafoNDMAd{
 
 
         return v;
+    }
+
+    public Vertex insertVertex(Object object, String label){
+        if(dicVertexes.size()/matrix[0].length >= 0.75f){
+            redimensiona();
+        }
+
+        Integer id = geraIDVtx();
+
+
+
+        if ((id < firstLinhaColUtil()) ||(firstLinhaColUtil() == -1)) {
+            primIndexMatrix = id;
+        }
+        if((id > lastLinhaColUtil()))
+            ultimIndexMatrix = id;
+        Vertex v = new Vertex(id,label,object);
+
+        dicVertexes.insertItem(v.getLabel(),v);
+        dicVertexLblId.insertItem(v.getLabel(),v.getId());
+        dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+
+
+
+        return v;
+
     }
 
 
