@@ -1,9 +1,9 @@
-package tadDicionario;
+package Hash.tadDicionario;
 
-import TabH.TDic;
+import Hash.TabH.TDic;
 import java.util.LinkedList;
-import TabH.Item;
-import hashFunctions.*;
+import Hash.TabH.Item;
+import Hash.hashFunctions.*;
 //TODO
 public class TDicEA extends TDic{
 

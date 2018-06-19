@@ -1,6 +1,6 @@
-package TabH;
+package Hash.TabH;
 
-import hashFunctions.*;
+import Hash.hashFunctions.*;
 
 import java.util.LinkedList;
 

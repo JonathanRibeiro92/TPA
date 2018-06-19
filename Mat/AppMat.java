@@ -1,3 +1,4 @@
+package Mat;
 public class AppMat{
 
     public static void main(String[] args) {

@@ -1,10 +1,10 @@
-
+package Mat;
 
 import java.io.InputStream;
 import java.io.FileInputStream;
 
 
-import tadDicionario.TDicEA;
+import Hash.tadDicionario.TDicEA;
 
 public class TMatNZ implements IMat{
 
@@ -26,7 +26,7 @@ public class TMatNZ implements IMat{
 
 	public float getValorPosIJ(int i,int j){
 		String chave = i + "-" + j;
-		return (float)matrixDicEA.findElem(chave);
+		return (float)matrixDicEA.findElement(chave);
 		
 	}
 

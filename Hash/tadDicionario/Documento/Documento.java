@@ -1,11 +1,11 @@
-package tadDicionario.Documento;
+package Hash.tadDicionario.Documento;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import hashFunctions.HashEngineDefault;
-import tadDicionario.TDicEA;
+import Hash.hashFunctions.HashEngineDefault;
+import Hash.tadDicionario.TDicEA;
 
 public class Documento implements IDocumento{
     

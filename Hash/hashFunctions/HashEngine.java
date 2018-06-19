@@ -1,4 +1,4 @@
-package hashFunctions;
+package Hash.hashFunctions;
 
 public abstract class HashEngine {
     

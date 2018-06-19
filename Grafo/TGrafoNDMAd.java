@@ -1,9 +1,9 @@
 package Grafo;
 
-import tadDicionario.Documento.ArquivoTxt;
-import TabH.TDic;
+import Hash.tadDicionario.Documento.ArquivoTxt;
+import Hash.TabH.TDic;
 import javafx.collections.transformation.TransformationList;
-import tadDicionario.TDicChain;
+import Hash.tadDicionario.TDicChain;
 import java.util.LinkedList;
 
 class Vertex{
@@ -516,7 +516,7 @@ public class TGrafoNDMAd{
                 g.dicEdgeLblId.insertItem(e.getLabel(),e.getId());
                 g.dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
 
-                
+
             }
             linha = arq.readline();
 

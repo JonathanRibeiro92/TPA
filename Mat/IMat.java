@@ -1,4 +1,4 @@
-
+package Mat;
 public interface IMat {
 
     int getColunas();

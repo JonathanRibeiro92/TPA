@@ -1,12 +1,14 @@
+package Mat;
 import java.util.ArrayList;
  
-import TabH.*;
- 
+import Hash.TabH.*;
+import Hash.tadDicionario.TDicChain;
+
 public abstract class TADMatH {
  
     private int linhas;
     private int colunas;
-    private TADTabH matriz;
+    private TDicChain matriz;
      
      
     public TADMatH(int linhas, int colunas){
