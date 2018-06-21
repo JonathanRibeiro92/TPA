@@ -6,86 +6,8 @@ import javafx.collections.transformation.TransformationList;
 import Hash.tadDicionario.TDicChain;
 import java.util.LinkedList;
 
-class Vertex{
-    private int id;
-    private String label;
-    private Object dado;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public Object getDado() {
-        return dado;
-    }
-
-    public void setDado(Object dado) {
-        this.dado = dado;
-    }
-
-    public Vertex(Object d){
-        this.setDado(d);
-    }
-
-    public Vertex(int id, String label, Object object){
-        this.id = id;
-        this.label= label;
-        this.dado = object;
-    }
 
 
-}
-class Edge{
-
-    private int id;
-    private String label;
-    private Object dado;
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public Object getDado() {
-        return dado;
-    }
-
-    public void setDado(Object dado) {
-        this.dado = dado;
-    }
-
-    public Edge(Object d){
-        this.setDado(d);
-    }
-
-
-
-
-
-}
 
 
 public class TGrafoNDMAd{
@@ -210,6 +132,17 @@ public class TGrafoNDMAd{
         return dicVertexes.size();
     }
 
+    public int degree(Vertex v){
+        int grau = 0;
+
+        int linha = v.getId();
+
+        for(int i = primIndexMatrix; i<= ultimIndexMatrix; i++)
+            if(!lstVtxDeletados.contains(i) && (matrix[linha][i]!= null))
+                grau++;
+
+        return grau;
+    }
 
     public int numEdges(){
         return dicEdges.size();
@@ -400,6 +333,21 @@ public class TGrafoNDMAd{
 
 
         return tmp;
+    }
+
+
+    public LinkedList<Edge> incidentEdges(Vertex v){
+        LinkedList<Edge> lst = new LinkedList<Edge>();
+
+        int linha = (int)dicVertexLblId.findElement(v.getDado());
+        for(int i = primIndexMatrix; i<= ultimIndexMatrix; i++)
+            if(!lstVtxDeletados.contains(i)){
+                if(matrix[linha][i] != null)
+                    lst.add((Edge)dicEdges.findElement(matrix[linha][i]));
+            }
+
+
+        return lst;
     }
 
 
