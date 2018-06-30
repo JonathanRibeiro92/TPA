@@ -207,7 +207,29 @@ public class TGrafoDDMad extends TGrafoDD{
 
     @Override
     Vertex insertVertex(Object x) {
+        if(dicVertexes.size()/matrix[0].length >= 0.75f)
+            redimensiona();
 
+        Vertex v = new Vertex(x);
+
+        v.setId(geraIDVtx());
+        v.setLabel(String.valueOf(globalID));
+
+
+        if ((v.getId() < firstLinhaColUtil()) ||(firstLinhaColUtil() == -1)) {
+            primIndexMatrix = v.getId();
+        }
+        if((v.getId() > lastLinhaColUtil()))
+            ultimIndexMatrix = v.getId();
+
+
+        dicVertexes.insertItem(v.getLabel(),v);
+        dicVertexLblId.insertItem(v.getLabel(),v.getId());
+        dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+
+
+
+        return v;
     }
 
     @Override
@@ -238,7 +260,7 @@ public class TGrafoDDMad extends TGrafoDD{
 
     @Override
     LinkedList<Edge> incidentEdges(Vertex v) {
-
+        return null;
     }
 
     @Override
