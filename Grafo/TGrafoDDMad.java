@@ -2,6 +2,7 @@ package Grafo;
 
 
 import Hash.TabH.TDic;
+import Hash.tadDicionario.Documento.ArquivoTxt;
 import Hash.tadDicionario.TDicChain;
 
 import java.util.LinkedList;
@@ -429,4 +430,180 @@ public class TGrafoDDMad extends TGrafoDD{
                 }
         return null;
     }
+
+
+    /*
+    *  Exemplo de uso:
+    *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+    * */
+    public static TGrafoDDMad carrega(String nome_arq_TGF){
+        TGrafoDDMad g = new TGrafoDDMad();
+
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+
+        /* lendo os vertices */
+        String linha = arq.readline();
+        while (!linha.trim().equals("#")){
+            String[] vet = linha.split(" ", 2);
+            Vertex v = g.insertVertex(null);
+
+
+
+            g.dicVertexes.removeElem(v.getLabel());
+            g.dicVertexLblId.removeElem(v.getLabel());
+            g.dicVertexIdLbl.removeElem(v.getId());
+
+
+
+            v.setLabel(vet[1]);
+            g.dicVertexes.insertItem(v.getLabel(),v);
+            g.dicVertexLblId.insertItem(v.getLabel(),v.getId());
+            g.dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+
+            linha = arq.readline();
+        }
+
+        /* lendo as arestas */
+        linha = arq.readline();
+        while (linha.trim()!= null){
+            String[] edges = linha.split(" ", 3);
+
+            String lblU = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[0].trim()) - 1);
+            String lblV = (String)g.dicVertexIdLbl.findElement(Integer.parseInt(edges[1].trim()) - 1);
+
+            Vertex u = (Vertex)g.dicVertexes.findElement(lblU);
+            Vertex v = (Vertex)g.dicVertexes.findElement(lblV);
+
+            Edge e = g.insertEdge(u,v,null);
+
+            if(e==null)
+                return null;
+            else{
+                g.dicEdges.removeElem(e.getLabel());
+                g.dicEdgeLblId.removeElem(e.getLabel());
+                g.dicEdgeIdLbl.removeElem(e.getId());
+
+                if(edges.length==3)
+                    e.setLabel(edges[2]);
+                else{
+                    e.setLabel("@#" + e.getId());
+                }
+
+                g.dicEdges.insertItem(e.getLabel(),e);
+                g.dicEdgeLblId.insertItem(e.getLabel(),e.getId());
+                g.dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
+
+
+            }
+            linha = arq.readline();
+
+        }
+
+        arq.close();
+
+        return g;
+
+    }
+
+    public String salva(String nome_arq_TGF){
+
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "wt");
+        TDic dicIDgrafoID_tgf = new TDicChain();
+        /* Escrevendo os vertices */
+
+        int id = 1;
+
+        String linha = null;
+
+        for(int i = primIndexMatrix; i<=ultimIndexMatrix; i++){
+            if(!lstVtxDeletados.contains(i)){
+                linha = id + " " + (String)dicVertexIdLbl.findElement(i);
+                arq.writeline(linha);
+
+                dicIDgrafoID_tgf.insertItem(i,id);
+
+                id++;
+            }
+        }
+        arq.writeline("#");
+
+
+        /* escrevendo as arestas */
+        for(int lin = primIndexMatrix; lin<=ultimIndexMatrix; lin++){
+            if(!lstVtxDeletados.contains(lin)){
+                for (int col = primIndexMatrix; col <= ultimIndexMatrix; col++){
+                    if(!lstVtxDeletados.contains(col)){
+                        if(matrix[lin][col] != null){
+                            int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
+                            int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
+                            linha = tgf_lin + " " + tgf_lin + " " + matrix[lin][col];
+
+                            arq.writeline(linha);
+                        }
+                    }
+                }
+            }
+        }
+
+
+        arq.close();
+
+        return nome_arq_TGF;
+
+
+
+    }
+
+
+    public void toStr(){
+
+        TDic dicIDgrafoID_tgf = new TDicChain();
+        /* Escrevendo os vertices */
+        String strGrafo = "";
+        int id = 1;
+
+        String linha = null;
+
+        for(int i = this.primIndexMatrix; i<= this.ultimIndexMatrix; i++){
+            if(!lstVtxDeletados.contains(i)){
+                linha = id + " " + (String)dicVertexIdLbl.findElement(i);
+                strGrafo.concat(linha);
+                strGrafo.concat("\n");
+
+                dicIDgrafoID_tgf.insertItem(i,id);
+
+                id++;
+            }
+        }
+        strGrafo.concat("#");
+        strGrafo.concat("\n");
+
+
+        /* escrevendo as arestas */
+        for(int lin = primIndexMatrix; lin<=ultimIndexMatrix; lin++){
+            if(!lstVtxDeletados.contains(lin)){
+                for (int col = primIndexMatrix; col <= ultimIndexMatrix; col++){
+                    if(!lstVtxDeletados.contains(col)){
+                        if(matrix[lin][col] != null){
+                            int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
+                            int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
+
+                            if(!matrix[lin][col].substring(0,2).equals("@#"))
+                                linha = tgf_lin + " " + tgf_col + " " + matrix[lin][col];
+                            else
+                                linha = tgf_lin + " " + tgf_col;
+                            strGrafo.concat(linha);
+                            strGrafo.concat("\n");
+                        }
+                    }
+                }
+            }
+        }
+
+
+        System.out.println(strGrafo);
+
+
+    }
+
 }

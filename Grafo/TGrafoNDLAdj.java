@@ -2,6 +2,7 @@ package Grafo;
 
 
 import Hash.TabH.TDic;
+import Hash.tadDicionario.Documento.ArquivoTxt;
 import Hash.tadDicionario.TDicChain;
 
 import java.util.LinkedList;
@@ -9,9 +10,9 @@ import java.util.LinkedList;
 public class TGrafoNDLAdj extends TGrafoND{
 
     int idEdgeLAdj = 0;
-    private LinkedList<Edge> edges;                                         // lista de arestas adj
+   /* private LinkedList<Edge> edges;                                         // lista de arestas adj
     private LinkedList<Vertex> vertices;                                   // lista de vertices adj
-
+    */
     private TDic dicEdges = new TDicChain();
     private TDic dicVertexes = new TDicChain();
 
@@ -29,6 +30,15 @@ public class TGrafoNDLAdj extends TGrafoND{
 
     }
 
+    //todo
+    public void setLabel( Vertex v, String label){
+        Vertex obj = (Vertex)dicVertexes.findElement(v);
+        obj.setLabel(label);
+
+
+    }
+
+
     @Override
     int numVertices() {
         return dicVertexes.size();
@@ -43,6 +53,10 @@ public class TGrafoNDLAdj extends TGrafoND{
     @Override
     LinkedList<Edge> edges() {
         return dicEdges.keys();
+    }
+
+    LinkedList<Vertex> vertices() {
+        return dicVertexes.keys();
     }
 
     @Override
@@ -162,7 +176,7 @@ public class TGrafoNDLAdj extends TGrafoND{
 
     public VertexLAd insertVertex(Object dado) {
         VertexLAd v = new VertexLAd(dado);
-        dicVertexes.insertItem(v.getLabel(), v);
+        dicVertexes.insertItem(v.getId(), v);
         return v;
     }
 
@@ -172,7 +186,7 @@ public class TGrafoNDLAdj extends TGrafoND{
         arestasIncidentes.forEach((a) -> {
             Object obj =  removeEdge(a);
         });
-        dicVertexes.removeElem(v.getLabel());
+        dicVertexes.removeElem(v.getId());
 
         return null;
     }
@@ -222,5 +236,81 @@ public class TGrafoNDLAdj extends TGrafoND{
     }
 
 
+    public int degree(Vertex v) {
+        return ((VertexLAd)v).meuDegree();
+    }
+
+    /*
+    *  Exemplo de uso:
+    *  TGrafoNDMAd g = TGrafoNDMAd.carrega("nomeArqTGF.txt");
+    * */
+    public static TGrafoNDLAdj carrega(String nome_arq_TGF){
+        TGrafoNDLAdj g = new TGrafoNDLAdj();
+
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
+
+        /* lendo os vertices */
+        String linha = arq.readline();
+        while (!linha.trim().equals("#")){
+            String[] vet = linha.split(" ", 2);
+            Vertex v = g.insertVertex(null);
+
+
+
+            g.dicVertexes.removeElem(v.getLabel());
+            /*g.dicVertexLblId.removeElem(v.getLabel());
+            g.dicVertexIdLbl.removeElem(v.getId());*/
+
+
+
+            v.setLabel(vet[1]);
+            g.dicVertexes.insertItem(v.getLabel(),v);
+            /*g.dicVertexLblId.insertItem(v.getLabel(),v.getId());
+            g.dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
+            */
+            linha = arq.readline();
+        }
+
+        /* lendo as arestas */
+        linha = arq.readline();
+        while (linha.trim()!= null){
+            String[] edges = linha.split(" ", 3);
+
+            String lblU = (String)g.dicVertexes.findElement(Integer.parseInt(edges[0].trim()) - 1);
+            String lblV = (String)g.dicVertexes.findElement(Integer.parseInt(edges[1].trim()) - 1);
+
+            Vertex u = (Vertex)g.dicVertexes.findElement(lblU);
+            Vertex v = (Vertex)g.dicVertexes.findElement(lblV);
+
+            Edge e = g.insertEdge(u,v,null);
+
+            if(e==null)
+                return null;
+            else{
+                g.dicEdges.removeElem(e.getLabel());
+                /*g.dicEdgeLblId.removeElem(e.getLabel());
+                g.dicEdgeIdLbl.removeElem(e.getId());
+                */
+                if(edges.length==3)
+                    e.setLabel(edges[2]);
+                else{
+                    e.setLabel("@#" + e.getId());
+                }
+
+                g.dicEdges.insertItem(e.getLabel(),e);
+                /*g.dicEdgeLblId.insertItem(e.getLabel(),e.getId());
+                g.dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
+                */
+
+            }
+            linha = arq.readline();
+
+        }
+
+        arq.close();
+
+        return g;
+
+    }
 
 }
