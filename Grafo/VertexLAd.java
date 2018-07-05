@@ -16,6 +16,11 @@ public class VertexLAd extends Vertex {
     public VertexLAd(Object d) {
         super(d);
     }
+    
+    public VertexLAd(int id, String label, Object dado){
+        super(id, label, dado);
+    }
+    
 
     public int meuINDegree(){
         return dicEdgesIN.size();
