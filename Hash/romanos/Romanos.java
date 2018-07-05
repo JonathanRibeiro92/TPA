@@ -1,6 +1,6 @@
-package romanos;
+package Hash.romanos;
 
-import tadDicionario.TDicEA;
+import Hash.tadDicionario.TDicEA;
 
 //"MMMCMXCIX"
 

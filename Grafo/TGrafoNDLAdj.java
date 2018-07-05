@@ -9,7 +9,8 @@ import java.util.LinkedList;
 
 public class TGrafoNDLAdj extends TGrafoND{
 
-    int idEdgeLAdj = 0;
+    protected int globalVertexID = 0;
+    protected int globalEdgeID = 0;
    /* private LinkedList<Edge> edges;                                         // lista de arestas adj
     private LinkedList<Vertex> vertices;                                   // lista de vertices adj
     */
@@ -25,6 +26,27 @@ public class TGrafoNDLAdj extends TGrafoND{
 
     }
     */
+
+    protected int generateVertexId(){
+        return globalVertexID++;
+    }
+
+    private VertexLAd findVertices(String vertex)
+    {
+        LinkedList<VertexLAd> lstVertexLAD = new LinkedList<>();
+        for (Object obj: dicVertexes.elements()){
+            lstVertexLAD.add((VertexLAd)obj);
+        }
+
+        for (VertexLAd vertice : lstVertexLAD) {
+            if(vertice.getLabel().equals(vertex))
+            {
+                return vertice;
+            }
+        }
+
+        return null;
+    }
 
     public TGrafoNDLAdj() {
 
@@ -136,11 +158,6 @@ public class TGrafoNDLAdj extends TGrafoND{
 
 
     @Override
-    Edge insertEdge(Vertex u, Vertex v, Object x) {
-        return null;
-    }
-
-    @Override
     LinkedList<Edge> incidentEdges(Vertex v) {
         return null;
     }
@@ -150,10 +167,6 @@ public class TGrafoNDLAdj extends TGrafoND{
         return v.getEdgesOUT();
     }
 
-    @Override
-    Object removeVertex(Vertex v) {
-        return null;
-    }
 
     @Override
     Object removeEdge(Edge e) {
@@ -175,62 +188,72 @@ public class TGrafoNDLAdj extends TGrafoND{
      */
 
     public VertexLAd insertVertex(Object dado) {
+        Integer id = generateVertexId();
+
         VertexLAd v = new VertexLAd(dado);
+        v.setId(id);
         dicVertexes.insertItem(v.getId(), v);
         return v;
     }
+    @Override
+    public Object removeVertex(Vertex v) {
+        VertexLAd vertexLAd = ((VertexLAd) v);
 
-    public Object removeVertex(VertexLAd v) {
-
-        LinkedList<EdgeLAd> arestasIncidentes = v.getEdges();
+        LinkedList<EdgeLAd> arestasIncidentes = vertexLAd.getEdges();
         arestasIncidentes.forEach((a) -> {
             Object obj =  removeEdge(a);
         });
-        dicVertexes.removeElem(v.getId());
+        return dicVertexes.removeElem(v.getId());
+
+    }
+
+
+    public Object getEdge(String vertexU, String vertexv) {
+        VertexLAd vertex1 = findVertices(vertexU);
+        VertexLAd vertex2 = findVertices(vertexv);
+
+        if(vertex1 != null && vertex2 != null)  {
+
+            for (EdgeLAd edgeLad : vertex1.getEdges()) {
+                if (edgeLad.isEndPoint(vertex2)) {
+                    return edgeLad;
+                }
+            }
+        }
 
         return null;
     }
 
-    public EdgeLAd getEdge(VertexLAd u, VertexLAd v) {
-        boolean achou = false;
-        EdgeLAd aresta = null;
-        int i = 0;
-        LinkedList<Edge> listaArestas = edges();
-        while(i < listaArestas.size() && !achou){
-            EdgeLAd obj = (EdgeLAd) listaArestas.get(i);
-            if((obj.getOrigem().getId() == u.getId()) && (obj.getDestino().getId() == v.getId()) ||
-                    (obj.getOrigem().getId() == v.getId()) && (obj.getDestino().getId() == u.getId()) ){
-                achou = true;
-                aresta = obj;
-                break;
-            }
-            i++;
-        }
+    @Override
+    public Edge insertEdge(Vertex u, Vertex v, Object pdado) {
 
-        return aresta;
-    }
 
-    public EdgeLAd insertEdge(VertexLAd u, VertexLAd v, Object pdado) {
-        VertexLAd vertice1 = (VertexLAd) dicVertexes.findElement(u.getLabel());
-        VertexLAd vertice2 = (VertexLAd) dicVertexes.findElement(v.getLabel());
-        EdgeLAd aresta =  getEdge(vertice1, vertice2);
+        VertexLAd vertice1 = (VertexLAd) dicVertexes.findElement(u.getId());
+        VertexLAd vertice2 = (VertexLAd) dicVertexes.findElement(v.getId());
+
+
+
+        EdgeLAd aresta = (EdgeLAd)getEdge(vertice1.getLabel(), vertice2.getLabel());
         if(aresta != null){
             aresta.setDado(pdado);
         }
         else{
+            Integer id = globalEdgeID++;
+            String label = id.toString();
             aresta = new EdgeLAd(vertice1, vertice2, pdado);
+            aresta.setLabel(label);
             vertice1.addEdgeIN(aresta);
             vertice1.addEdgeOUT(aresta);
             vertice2.addEdgeIN(aresta);
             vertice2.addEdgeOUT(aresta);
-            dicEdges.insertItem(aresta.getLabel(), aresta);
+            dicEdges.insertItem(aresta.getId(), aresta);
         }
         return aresta;
 
     }
 
     public Object removeEdge(EdgeLAd edge){
-        Object edgeRemoved = dicEdges.removeElem(edge.getLabel());
+        Object edgeRemoved = dicEdges.removeElem(edge.getId());
 
         return edgeRemoved;
     }

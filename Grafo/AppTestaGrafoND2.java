@@ -61,7 +61,7 @@ public class AppTestaGrafoND2 {
         // Enquanto não clonar todas as arestas do grafo original, faça:
         while(i < lst_es_glad.size()){
             // Leia a i-ésima aresta do grafo oriignal e obtenha os seus endVertices.
-            lst_end_vertices_gnLad = new LinkedList<>(gndLad.endVertices(lst_es_glad.get(i).getLabel()));
+            lst_end_vertices_gnLad = new LinkedList<Vertex>();//(gndLad.endVertices(lst_es_glad.get(i).getLabel()));
 
 
             // Faça um bkp do primeiro end vertice da aresta.
