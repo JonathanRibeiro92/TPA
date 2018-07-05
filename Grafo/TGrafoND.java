@@ -2,8 +2,9 @@ package Grafo;
 
 import java.util.LinkedList;
 
-public abstract class TGrafoND{
+public interface TGrafoND{
     //Métodos comuns dirigido/não dirigido
+    /*
     abstract int numVertices();
     abstract int numEdges();
     abstract LinkedList<Edge> edges();
@@ -16,4 +17,8 @@ public abstract class TGrafoND{
     abstract LinkedList<Edge> incidentEdges(Vertex v);
     abstract Object removeVertex(Vertex v);
     abstract Object removeEdge(Edge e);
+    */
+    LinkedList<Edge> incidentEdges(Vertex v);
+    LinkedList<Vertice> adjacentVertices(Vertex v);
+    
 }
