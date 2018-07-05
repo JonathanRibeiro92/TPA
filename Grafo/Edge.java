@@ -34,8 +34,17 @@ public class Edge{
         this.setDado(d);
     }
 
+    /*
+     @Override
+    public boolean equals(Object obj) {
+        Edge object = (Edge) obj;
+        return this.id == object.getId() && this.label.equals(object.getLabel()) && this.dado == object.dado;
+    }
 
+    @Override
+    public String toString() {
+        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + dado;
+    }
 
-
-
+    */
 }
