@@ -239,72 +239,42 @@ public class TGrafoLAdj extends Grafo {
     *  Exemplo de uso:
     *  TGrafoLAdj g = TGrafoLAdj.carrega("nomeArqTGF.txt");
     * */
-    public static TGrafoLAdj carrega(String nome_arq_TGF){
-        TGrafoLAdj g = new TGrafoLAdj();
-
-        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
-
+    protected static void TGrafoLAdj carregaGenerico(TADGrafoLadj  grafo, ArquivoTxt arq){
         /* lendo os vertices */
         String linha = arq.readline();
         while (!linha.trim().equals("#")){
-            String[] vet = linha.split(" ", 2);
-            Vertex v = g.insertVertex(null);
+            String[] vector = linha.split(" ", 2);
+            if(vector.length>1) {
+                grafo.insertVertex(null, vector[1].trim());
+            }
 
-
-
-            g.dicVertexes.removeElement(v.getLabel());
-            /*g.dicVertexLblId.removeElem(v.getLabel());
-            g.dicVertexIdLbl.removeElem(v.getId());*/
-
-
-
-            v.setLabel(vet[1]);
-            g.dicVertexes.insertItem(v.getLabel(),v);
-            /*g.dicVertexLblId.insertItem(v.getLabel(),v.getId());
-            g.dicVertexIdLbl.insertItem(v.getId(),v.getLabel());
-            */
             linha = arq.readline();
         }
 
         /* lendo as arestas */
         linha = arq.readline();
-        while (linha.trim()!= null){
+        while (linha!= null){
             String[] edges = linha.split(" ", 3);
 
-            String lblU = (String)g.dicVertexes.findElement(Integer.parseInt(edges[0].trim()) - 1);
-            String lblV = (String)g.dicVertexes.findElement(Integer.parseInt(edges[1].trim()) - 1);
+            int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
+            int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
 
-            Vertex u = (Vertex)g.dicVertexes.findElement(lblU);
-            Vertex v = (Vertex)g.dicVertexes.findElement(lblV);
+            Vertex vertice1 = grafo.dicVertexes.findElement(idVertex1);
+            Vertex vertice2 = grafo.dicVertexes.findElement(idVertex2);
 
-            Edge e = g.insertEdge(u,v,null);
+            String label="";
 
-            if(e==null)
-                return null;
-            else{
-                g.dicEdges.removeElement(e.getLabel());
-                /*g.dicEdgeLblId.removeElem(e.getLabel());
-                g.dicEdgeIdLbl.removeElem(e.getId());
-                */
-                if(edges.length==3)
-                    e.setLabel(edges[2]);
-                else{
-                    e.setLabel("@#" + e.getId());
-                }
-
-                g.dicEdges.insertItem(e.getLabel(),e);
-                /*g.dicEdgeLblId.insertItem(e.getLabel(),e.getId());
-                g.dicEdgeIdLbl.insertItem(e.getId(),e.getLabel());
-                */
-
+            if(edges.length == 3) {
+                label = (edges[2].trim());
             }
+            if(label.equals("")) {
+                label = ("@#" + (grafo.globalEdgeID+1));
+            }
+
+            grafo.insertEdge(vertice1, vertice2, null, label);
+
             linha = arq.readline();
-
         }
-
-        arq.close();
-
-        return g;
 
     }
 
