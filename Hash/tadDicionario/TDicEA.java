@@ -107,7 +107,7 @@ public class TDicEA extends TDic{
     }
 
     
-    public boolean insertItem(Object k, Object elem) {
+    /*public boolean insertItem(Object k, Object elem) {
         if (this.quant <= this.conteudos.length * 0.8) {
             int hash = this.hengine.calcCodeHash(k);
             int index = hash % this.conteudos.length;
@@ -164,6 +164,71 @@ public class TDicEA extends TDic{
         }
                     
 
+    }*/
+    
+    public int[] find(K key)
+    {
+        int firstNull = -1;
+        try {
+            long hash = this.hengine.calcCodeHash(k);
+            int vectorPos = hash % this.conteudos.length;
+
+            int searchPos = vectorPos;
+
+            if(conteudos[vectorPos] != null && conteudos[vectorPos].getKey().equals(key))
+            {
+                return new int[]{vectorPos,firstNull};
+            }else
+            {
+                do{
+                    if(conteudos[searchPos]==null && firstNull == -1)
+                    {
+                        firstNull = searchPos;
+                    }
+                    else if(conteudos[searchPos] != null && conteudos[searchPos].getKey().equals(key))
+                    {
+                        return new int[]{searchPos,firstNull};
+                    }
+                    searchPos = (searchPos + 1) % length;
+                }while (searchPos != vectorPos);
+            }
+
+            return new int[]{-1,firstNull};
+        }catch (Exception e){
+            return new int[]{-1,firstNull};
+        }
+    }
+    
+    public boolean insertItem(Object k, Object elem) {
+        if(this.quant <= this.conteudos.length * 0.8){
+            redimensiona();
+        }
+
+        try {
+            int hash = this.hengine.calcCodeHash(k);
+            int vectorPos = hash % this.conteudos.length;
+            int pos = vectorPos;
+            int[] find = find(key);
+            int posFind = find[0];
+            int firstNull = find[1];
+            if(posFind != -1)
+            {
+                conteudos[posFind].setValue(value);
+                return true;
+            }
+            else{
+                if(firstNull != -1)
+                {
+                    conteudos[firstNull] = new Item(elem,k, hash);
+                    this.quant++;
+                    return true;
+                }
+                return false;
+            }
+        }catch (Exception e)
+        {
+            return false;
+        }
     }
 
     public Object findElement(Object k) {
@@ -190,7 +255,9 @@ public class TDicEA extends TDic{
             this.quant--;
             return item;
         }
-    } 
+    }
+   
+    
 
     @Override
     public boolean isEmpty() {
