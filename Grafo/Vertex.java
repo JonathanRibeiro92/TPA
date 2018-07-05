@@ -29,14 +29,14 @@ public class Vertex{
         this.dado = dado;
     }
 
-    public Vertex(Object d){
+    public Vertex(Object dado){
         this.setDado(d);
     }
 
-    public Vertex(int id, String label, Object object){
+    public Vertex(int id, String label, Object dado){
         this.id = id;
         this.label= label;
-        this.dado = object;
+        this.dado = dado;
     }
     
     /*
