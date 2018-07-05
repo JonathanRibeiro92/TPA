@@ -38,6 +38,13 @@ public class Vertex{
         this.label= label;
         this.dado = object;
     }
+    
+    /*
+    @Override
+    public String toString() {
+        return "ID: " + id + "; " + "Label: " + label + "; " + "Value: " + dado;
+    }
+    */
 
 
 }
