@@ -17,6 +17,12 @@ public class EdgeLAd extends Edge{
         return origem;
     }
 
+    public EdgeLAd(Integer id, String label, Object dado, VertexLAd origem, VertexLAd destino) {
+        super(id,label,dado);
+        this.origem = origem;
+        this.destino = destino;
+    }
+
     public EdgeLAd(VertexLAd origem, VertexLAd destino, Object dado) {
         super(dado);
         this.origem = origem;

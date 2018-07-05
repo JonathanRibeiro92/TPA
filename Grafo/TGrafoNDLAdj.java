@@ -27,12 +27,22 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
 
     }
     */
+
+
+    private TDic dicEdges;
+    private TDic dicVertexes;
+
+    public TGrafoNDLAdj() {
+        dicEdges = new TDicChain();
+        dicVertexes = new TDicChain();
+
+    }
     
      @Override
     public LinkedList<Edge> incidentEdges(Vertex vertice) {
-        VertexLAd vertexLad = this.dicVertexes.findElement(vertice.getId());
-        LinkedList<Edge> incoming = (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesIn();
-        LinkedList<Edge> outgoing = (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesOut();
+        VertexLAd vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
+        LinkedList<Edge> incoming = (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesIN();
+        LinkedList<Edge> outgoing = (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesOUT();
 
         incoming.addAll(outgoing);
 
@@ -40,8 +50,8 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
     }
 
     @Override
-    public LinkedList<Vertex> adjacenteVertices(Vertex vertice) {
-        VertexLAd vertexLad = this.dicVertexes.findElement(vertice.getId());
+    public LinkedList<Vertex> adjacentVertices(Vertex vertice) {
+        VertexLAd vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
         LinkedList<Vertex> lst = new LinkedList<>();
 
         for ( EdgeLAd edgeLad: vertexLad.getEdges()) {
@@ -65,6 +75,7 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
 
     }
 
+    @Override
     public String toString(){
 
         TDic dicIDgrafoID_tgf = new TDicChain();
@@ -75,7 +86,8 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
         String linha;
 
         for(int i = 0; i<  dicVertexes.size(); i++){
-            linha = id + " " + dicVertexes.findElement(i).getLabel();
+            Vertex vertice = (Vertex)dicVertexes.findElement(i);
+            linha = id + " " + vertice.getLabel();
             strGrafo+=(linha);
             strGrafo+=("\n");
 
@@ -87,11 +99,11 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
         strGrafo+=("\n");
 
         /* escrevendo as arestas */
-        for (EdgeLAd edge: edges.elements()) {
+        for (EdgeLAd edge: (LinkedList<EdgeLAd>)dicEdges.elements()) {
             if(!edge.getLabel().substring(0,2).equals("@#")) {
-                linha = (edge.getOrigin().getId()+1) + " " + (edge.getDestination().getId()+1) + " " + edge.getLabel();
+                linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1) + " " + edge.getLabel();
             }else{
-                linha = (edge.getOrigin().getId()+1) + " " + (edge.getDestination().getId()+1);
+                linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1);
             }
             strGrafo+=(linha);
             strGrafo+=("\n");

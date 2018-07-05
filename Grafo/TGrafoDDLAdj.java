@@ -17,26 +17,26 @@ public class TGrafoDDLAdj  extends TGrafoLAdj implements TGrafoDD {
     
        @Override
     public int outDegree(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
-        return vertexLad.myOutDegree();
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
+        return vertexLad.meuOUTDegree();
     }
 
     @Override
     public int inDegree(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
-        return vertexLad.myInDegree();
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
+        return vertexLad.meuINDegree();
     }
 
     @Override
     public LinkedList<Edge> inIncidentEdges(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
-        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesIn();
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
+        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesIN();
     }
 
     @Override
     public LinkedList<Edge> outIncidentEdges(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
-        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesOut();
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
+        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesOUT();
     }
 
     @Override
@@ -49,11 +49,11 @@ public class TGrafoDDLAdj  extends TGrafoLAdj implements TGrafoDD {
 
     @Override
     public LinkedList<Vertex> inAdjacentVertices(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
         LinkedList<Vertex> lst = new LinkedList<>();
 
-        for ( EdgeLAd  edgeLad: vertexLad.getEdgesIn()) {
-            lst.add(edgeLad.myOpossite(vertexLad));
+        for ( EdgeLAd  edgeLad: vertexLad.getEdgesIN()) {
+            lst.add(edgeLad.meuOpposite(vertexLad));
         }
 
         return lst;
@@ -61,18 +61,18 @@ public class TGrafoDDLAdj  extends TGrafoLAdj implements TGrafoDD {
 
     @Override
     public LinkedList<Vertex> outAdjacentVertices(Vertex vertice) {
-        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        VertexLAd  vertexLad = (VertexLAd) this.dicVertexes.findElement(vertice.getId());
         LinkedList<Vertex> lst = new LinkedList<>();
 
-        for ( EdgeLAd  edgeLad: vertexLad.getEdgesOut()) {
-            lst.add(edgeLad.myOpossite(vertexLad));
+        for ( EdgeLAd  edgeLad: vertexLad.getEdgesOUT()) {
+            lst.add(edgeLad.meuOpposite(vertexLad));
         }
 
         return lst;
     }
 
     @Override
-    public LinkedList<Vertex> adjacenteVertices(Vertex vertice) {
+    public LinkedList<Vertex> adjacentVertices(Vertex vertice) {
         LinkedList<Vertex> edges = inAdjacentVertices(vertice);
         edges.addAll(outAdjacentVertices(vertice));
 
@@ -81,16 +81,16 @@ public class TGrafoDDLAdj  extends TGrafoLAdj implements TGrafoDD {
 
     @Override
     public Vertex destination(Edge edge) {
-        EdgeLAd  edgeLad = edges.findElement(edge.getId());
+        EdgeLAd  edgeLad = (EdgeLAd)dicEdges.findElement(edge.getId());
 
-        return edgeLad.getDestination();
+        return edgeLad.getDestino();
     }
 
     @Override
     public Vertex origin(Edge edge) {
-        EdgeLAd  edgeLad = edges.findElement(edge.getId());
+        EdgeLAd  edgeLad = (EdgeLAd)dicEdges.findElement(edge.getId());
 
-        return edgeLad.getOrigin();
+        return edgeLad.getOrigem();
     }
 
     public static TGrafoDDLAdj carrega(String nome_arq_TGF){

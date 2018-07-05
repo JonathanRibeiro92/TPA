@@ -30,7 +30,7 @@ public class Vertex{
     }
 
     public Vertex(Object dado){
-        this.setDado(d);
+        this.setDado(dado);
     }
 
     public Vertex(int id, String label, Object dado){

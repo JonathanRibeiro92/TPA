@@ -57,7 +57,7 @@ public abstract class TDic {
     }
     public abstract boolean insertItem(Object chave,Object elemento);
      
-    public abstract Object removeElem(Object chave);
+    public abstract Object removeElement(Object chave);
      
      
     public abstract LinkedList keys();

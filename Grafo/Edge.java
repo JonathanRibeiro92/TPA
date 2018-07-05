@@ -34,6 +34,12 @@ public class Edge{
         this.setDado(d);
     }
 
+    public Edge(int id, String label, Object dado) {
+        this.id = id;
+        this.label = label;
+        this.dado = dado;
+    }
+
     /*
      @Override
     public boolean equals(Object obj) {

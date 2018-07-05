@@ -166,16 +166,16 @@ public class TDicEA extends TDic{
 
     }*/
     
-    public int[] find(K key)
+    public int[] find(Object k)
     {
         int firstNull = -1;
         try {
-            long hash = this.hengine.calcCodeHash(k);
+            int hash = this.hengine.calcCodeHash(k);
             int vectorPos = hash % this.conteudos.length;
 
             int searchPos = vectorPos;
 
-            if(conteudos[vectorPos] != null && conteudos[vectorPos].getKey().equals(key))
+            if(conteudos[vectorPos] != null && conteudos[vectorPos].getKey().equals(k))
             {
                 return new int[]{vectorPos,firstNull};
             }else
@@ -185,11 +185,11 @@ public class TDicEA extends TDic{
                     {
                         firstNull = searchPos;
                     }
-                    else if(conteudos[searchPos] != null && conteudos[searchPos].getKey().equals(key))
+                    else if(conteudos[searchPos] != null && conteudos[searchPos].getKey().equals(k))
                     {
                         return new int[]{searchPos,firstNull};
                     }
-                    searchPos = (searchPos + 1) % length;
+                    searchPos = (searchPos + 1) % this.conteudos.length;
                 }while (searchPos != vectorPos);
             }
 
@@ -208,12 +208,12 @@ public class TDicEA extends TDic{
             int hash = this.hengine.calcCodeHash(k);
             int vectorPos = hash % this.conteudos.length;
             int pos = vectorPos;
-            int[] find = find(key);
+            int[] find = find(k);
             int posFind = find[0];
             int firstNull = find[1];
             if(posFind != -1)
             {
-                conteudos[posFind].setValue(value);
+                conteudos[posFind].setElem(elem);
                 return true;
             }
             else{
@@ -244,7 +244,7 @@ public class TDicEA extends TDic{
 
 
     @Override
-    public Object removeElem(Object k) {
+    public Object removeElement(Object k) {
         int indice = encontraItem(k);
 
         if (indice == -1) {

@@ -26,11 +26,13 @@ public interface TGrafoDD{
     abstract int inDegree(Vertex v);
     abstract int outDegree(Vertex v);
 
+    LinkedList<Edge> incidentEdges(Vertex vertice);
     abstract LinkedList<Edge> inIncidentEdges(Vertex v);
     abstract LinkedList<Edge> outIncidentEdges(Vertex v);
 
     abstract LinkedList<Vertex> inAdjacentVertices(Vertex v);
     abstract LinkedList<Vertex> outAdjacentVertices(Vertex v);
+    LinkedList<Vertex> adjacentVertices(Vertex vertice);
 
     abstract Vertex destination(Edge e);
     abstract Vertex origin(Edge e);

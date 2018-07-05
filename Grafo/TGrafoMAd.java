@@ -12,7 +12,7 @@ public class TGrafoMAd extends Grafo {
 	protected TDic dicVertexes = new TDicChain();
 	protected TDic dicEdges = new TDicChain();
 
-	protected LinkedList<> lstVtxDelete = new LinkedList();
+	protected LinkedList<Integer> lstVtxDelete = new LinkedList();
 
 	protected int globalVertexID = 0;
 	protected int globalEdgeID = 0;
@@ -41,7 +41,7 @@ public class TGrafoMAd extends Grafo {
 	}
 
 	@Override
-	public LinkedList<Vertex> dicVertexes() {
+	public LinkedList<Vertex> vertices() {
 		return dicVertexes.elements();
 	}
 
@@ -51,7 +51,7 @@ public class TGrafoMAd extends Grafo {
 	}
 
 	@Override
-	public LinkedList<Edge> dicEdges() {
+	public LinkedList<Edge> edges() {
 		return dicEdges.elements();
 	}
 
@@ -64,7 +64,7 @@ public class TGrafoMAd extends Grafo {
 		{
 			vertex2Pos = findVertexPosByLabel(vertex2);
 			if(vertex2Pos != -1){
-				return dicEdges.findElement(matrix[vertex1Pos][vertex2Pos]);
+				return (Edge) dicEdges.findElement(matrix[vertex1Pos][vertex2Pos]);
 			}
 		}
 
@@ -79,11 +79,13 @@ public class TGrafoMAd extends Grafo {
 		for (int i = 0; i< tam; i++){
 			for(int j = 0; j < tam; j++){
 				if(matrix[i][j] != null && matrix[i][j].equals(id)){
-					String labelVertex1 = dicVertexes.findElement(i).getLabel();
+					Vertex vertex1 = (Vertex) dicVertexes.findElement(i);
+					String labelVertex1 = vertex1.getLabel();
 					String labelVertex2;
 					if(!labelVertex1.equals(""))
 					{
-						labelVertex2 = dicVertexes.findElement(j).getLabel();
+						Vertex vertex2 = (Vertex) dicVertexes.findElement(j);
+						labelVertex2 = vertex2.getLabel();
 						if(!labelVertex2.equals(""))
 						{
 							return new String[] {labelVertex2,labelVertex1};
@@ -103,11 +105,11 @@ public class TGrafoMAd extends Grafo {
 		for (int i = 0; i< tam; i++){
 			for(int j = 0; j < tam; j++){
 				if(matrix[i][j] != null && matrix[i][j].equals(id)){
-					Vertex vertex1 = dicVertexes.findElement(i);
+					Vertex vertex1 = (Vertex) dicVertexes.findElement(i);
 					Vertex vertex2;
 					if(!vertex1.equals(""))
 					{
-						vertex2 = dicVertexes.findElement(j);
+						vertex2 = (Vertex) dicVertexes.findElement(j);
 						if(!vertex2.equals(""))
 						{
 							return new LinkedList<>(Arrays.asList(vertex2, vertex1));
@@ -237,7 +239,7 @@ public class TGrafoMAd extends Grafo {
 
 	protected int findVertexPosByLabel(String label)
 	{
-		for ( Vertex vertice: dicVertexes.elements()) {
+		for ( Vertex vertice: ((LinkedList<Vertex>) dicVertexes.elements())) {
 			if(vertice.getLabel().equals(label))
 			{
 				return vertice.getId();
@@ -248,7 +250,8 @@ public class TGrafoMAd extends Grafo {
 
 	protected String findVertexLabelById(int id)
 	{
-		for ( Vertex vertice: dicVertexes.elements()) {
+
+		for ( Vertex vertice: ((LinkedList<Vertex>) dicVertexes.elements())) {
 			if(vertice.getId()==id)
 			{
 				return vertice.getLabel();
@@ -259,7 +262,7 @@ public class TGrafoMAd extends Grafo {
 
 	protected int findEdgePosByLabel(String label)
 	{
-		for (Edge edge: dicEdges.elements()) {
+		for (Edge edge: ((LinkedList<Edge>) dicEdges.elements())) {
 			if(edge.getLabel().equals(label))
 			{
 				return edge.getId();
@@ -333,8 +336,8 @@ public class TGrafoMAd extends Grafo {
 			int idVertex1 = Integer.parseInt(dicEdges[0].trim()) - 1;
 			int idVertex2 = Integer.parseInt(dicEdges[1].trim()) - 1;
 
-			Vertex vertice1 = grafo.dicVertexes.findElement(idVertex1);
-			Vertex vertice2 = grafo.dicVertexes.findElement(idVertex2);
+			Vertex vertice1 = (Vertex) grafo.dicVertexes.findElement(idVertex1);
+			Vertex vertice2 = (Vertex) grafo.dicVertexes.findElement(idVertex2);
 
 			String label="";
 

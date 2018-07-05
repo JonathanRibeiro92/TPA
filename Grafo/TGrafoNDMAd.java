@@ -14,6 +14,9 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
         super(length);
     }
 
+    public TGrafoNDMAd() {
+    }
+
     @Override
     public int degree(Vertex v){
         int degree = 0;
@@ -124,7 +127,7 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
         for(int i = firstIndexMatrix; i<= lastIndexMatrix; i++) {
             if (!lstVtxDelete.contains(i)) {
                 if (matrix[row][i] != null) {
-                    lst.add(dicEdges.findElement(matrix[row][i]));
+                    lst.add((Edge) dicEdges.findElement(matrix[row][i]));
                 }
             }
         }
@@ -133,7 +136,7 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
     }
 
     public LinkedList<Vertex> adjacentVertices(Vertex vertice){
-        Header headerToFind = new Header(vertice.getLabel(), vertice.getId());
+
 
         if(dicVertexes.findElement(vertice.getId()) == null)
             return null;
@@ -144,7 +147,7 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
         for (int i = firstIndexMatrix; i <= lastIndexMatrix; i++) {
             if(!lstVtxDelete.contains(i) && matrix[row][i] != null){
                 String label = findVertexLabelById(i);
-                lst.add(dicVertexes.findElement(i));
+                lst.add((Vertex) dicVertexes.findElement(i));
             }
         }
 
@@ -199,11 +202,12 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
                 for (int col = lin; col <= lastIndexMatrix; col++){
                     if(!lstVtxDelete.contains(col)){
                         if(matrix[lin][col] != null){
-                            int tgf_lin = dicIDgrafoID_tgf.findElement(lin);
-                            int tgf_col = dicIDgrafoID_tgf.findElement(col);
+                            int tgf_lin = (int) dicIDgrafoID_tgf.findElement(lin);
+                            int tgf_col = (int) dicIDgrafoID_tgf.findElement(col);
 
-                            if(!dicEdges.findElement(matrix[lin][col]).getLabel().substring(0,2).equals("@#")) {
-                                row = tgf_lin + " " + tgf_col + " " + dicEdges.findElement(matrix[lin][col]).getLabel();
+                            Edge edge = (Edge) dicEdges.findElement(matrix[lin][col]);
+                            if(!edge.getLabel().substring(0,2).equals("@#")) {
+                                row = tgf_lin + " " + tgf_col + " " + edge.getLabel();
                             }else{
                                 row = tgf_lin + " " + tgf_col;
                             }

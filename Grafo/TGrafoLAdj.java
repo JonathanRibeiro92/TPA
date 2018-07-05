@@ -10,12 +10,18 @@ import java.util.LinkedList;
 public class TGrafoLAdj extends Grafo {
     protected int globalVertexID = 0;
     protected int globalEdgeID = 0;
-    protected TDic dicEdges = new TDicChain();
-    protected TDic dicVertexes = new TDicChain();
+    protected TDic dicEdges;
+    protected TDic dicVertexes;
+
+    public TGrafoLAdj() {
+        dicEdges = new TDicChain();
+        dicVertexes = new TDicChain();
+    }
+
 
     @Override
     public int numVertices() {
-        return vertices.size();
+        return dicVertexes.size();
     }
 
     @Override
@@ -25,7 +31,7 @@ public class TGrafoLAdj extends Grafo {
 
     @Override
     public int numEdges() {
-        return edges.size();
+        return dicEdges.size();
     }
 
     @Override
@@ -53,7 +59,7 @@ public class TGrafoLAdj extends Grafo {
 
     private VertexLAd findVertices(String vertex)
     {
-        for (VertexLAd vertice : vertices.elements()) {
+        for (VertexLAd vertice : (LinkedList<VertexLAd>)dicVertexes.elements()) {
             if(vertice.getLabel().equals(vertex))
             {
                 return vertice;
@@ -65,7 +71,7 @@ public class TGrafoLAdj extends Grafo {
 
     private EdgeLAd findEdges(String edge)
     {
-        for (EdgeLAd edgeLad : edges.elements()) {
+        for (EdgeLAd edgeLad : (LinkedList<EdgeLAd>)dicEdges.elements()) {
             if(edgeLad.getLabel().equals(edge))
             {
                 return edgeLad;
@@ -78,14 +84,14 @@ public class TGrafoLAdj extends Grafo {
     @Override
     public String[] endVertices(String edge) {
         EdgeLAd edgeLad = findEdges(edge);
-        return new String[] { edgeLad.getOrigin().getLabel(),edgeLad.getDestination().getLabel()};
+        return new String[] { edgeLad.getOrigem().getLabel(),edgeLad.getDestino().getLabel()};
     }
 
     public LinkedList<Vertex> endVertices(Edge edge) {
-        EdgeLAd edgeLad = edges.findElement(edge.getId());
+        EdgeLAd edgeLad = (EdgeLAd)dicEdges.findElement(edge.getId());
         LinkedList<Vertex> lst = new LinkedList<>();
-        lst.add(edgeLad.getOrigin());
-        lst.add(edgeLad.getDestination());
+        lst.add(edgeLad.getOrigem());
+        lst.add(edgeLad.getDestino());
 
 
         return lst;
@@ -106,9 +112,9 @@ public class TGrafoLAdj extends Grafo {
         return null;
     }
 
-    public Vertice opossite(Vertice vertex, Edge edge) {
+    public Vertex opossite(Vertex vertex, Edge edge) {
         VertexLAd vertexLad = (VertexLAd) vertex;
-        EdgeLAd edgeLad = (EdgeLad)edge;
+        EdgeLAd edgeLad = (EdgeLAd)edge;
 
         for (EdgeLAd edgeObj : vertexLad.getEdges()) {
             if(edgeObj == edgeLad)
@@ -136,7 +142,7 @@ public class TGrafoLAdj extends Grafo {
     public Vertex insertVertex(Object dado, String label) {
         Integer id = generateVertexId();
 
-        VertexLAd vertexLad = new VerticeLad(id,label, dado);
+        VertexLAd vertexLad = new VertexLAd(id,label, dado);
 
         dicVertexes.insertItem(id,vertexLad);
 
@@ -145,33 +151,33 @@ public class TGrafoLAdj extends Grafo {
 
     @Override
     public Edge insertEdge(Vertex vertice1, Vertex vertice2, Object dado) {
-        VertexLAd vertexLad1 = vertices.findElement(vertice1.getId());
-        VertexLAd vertexLad2 = vertices.findElement(vertice2.getId());
+        VertexLAd vertexLad1 = (VertexLAd) dicVertexes.findElement(vertice1.getId());
+        VertexLAd vertexLad2 = (VertexLAd) dicVertexes.findElement(vertice2.getId());
 
         Integer id = globalEdgeID++;
         String label = id.toString();
 
-        EdgeLAd edgeLad = new EdgeLAd(id,label,dado,vertexLad1,vertexLad2);
-        vertexLad1.addEdgeIn(edgeLad);
-        vertexLad2.addEdgeOut(edgeLad);
+        EdgeLAd edgeLad = new EdgeLAd(id,label,dado,vertexLad2,vertexLad1);
+        vertexLad1.addEdgeIN(edgeLad);
+        vertexLad2.addEdgeOUT(edgeLad);
 
-        edges.insertItem(id,edgeLad);
+        dicEdges.insertItem(id,edgeLad);
 
         return edgeLad;
     }
 
     @Override
     public Edge insertEdge(Vertex vertice1, Vertex vertice2, Object dado, String label) {
-        VerticeLad vertexLad1 = vertices.findElement(vertice1.getId());
-        VerticeLad vertexLad2 = vertices.findElement(vertice2.getId());
+        VertexLAd vertexLad1 = (VertexLAd) dicVertexes.findElement(vertice1.getId());
+        VertexLAd vertexLad2 = (VertexLAd) dicVertexes.findElement(vertice2.getId());
 
         Integer id = globalEdgeID++;
 
         EdgeLAd edgeLad = new EdgeLAd(id,label,dado,vertexLad1,vertexLad2);
-        vertexLad1.addEdgeIn(edgeLad);
-        vertexLad2.addEdgeOut(edgeLad);
+        vertexLad1.addEdgeIN(edgeLad);
+        vertexLad2.addEdgeOUT(edgeLad);
 
-        edges.insertItem(id,edgeLad);
+        dicEdges.insertItem(id,edgeLad);
 
         return edgeLad;
     }
@@ -182,7 +188,7 @@ public class TGrafoLAdj extends Grafo {
         VertexLAd verticeLad = ((VertexLAd)vertice);
         LinkedList<EdgeLAd> edgesLad = verticeLad.getEdges();
         for (Edge edge: edgesLad) {
-            Edge edgeFind = edges.findElement(edge.getId());
+            Edge edgeFind = (Edge)dicEdges.findElement(edge.getId());
             if( edgeFind != null)
             {
                 removeEdge(edge);
@@ -239,7 +245,7 @@ public class TGrafoLAdj extends Grafo {
     *  Exemplo de uso:
     *  TGrafoLAdj g = TGrafoLAdj.carrega("nomeArqTGF.txt");
     * */
-    protected static void TGrafoLAdj carregaGenerico(TADGrafoLadj  grafo, ArquivoTxt arq){
+    protected static void carregaGenerico(TGrafoLAdj  grafo, ArquivoTxt arq){
         /* lendo os vertices */
         String linha = arq.readline();
         while (!linha.trim().equals("#")){
@@ -259,8 +265,8 @@ public class TGrafoLAdj extends Grafo {
             int idVertex1 = Integer.parseInt(edges[0].trim()) - 1;
             int idVertex2 = Integer.parseInt(edges[1].trim()) - 1;
 
-            Vertex vertice1 = grafo.dicVertexes.findElement(idVertex1);
-            Vertex vertice2 = grafo.dicVertexes.findElement(idVertex2);
+            Vertex vertice1 = (Vertex) grafo.dicVertexes.findElement(idVertex1);
+            Vertex vertice2 = (Vertex) grafo.dicVertexes.findElement(idVertex2);
 
             String label="";
 

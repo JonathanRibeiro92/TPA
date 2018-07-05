@@ -143,8 +143,9 @@ public class TDicChain extends TDic{
 		else
 			return -1;
 	}
-	
-	
+
+
+	@Override
 	public Object removeElement(Object k){
 		int pos = he.calcCodeHash(k) % tam_vet_conteudo;
 		
@@ -197,10 +198,7 @@ public class TDicChain extends TDic{
 			return null;
 	} // fim de findElement
 
-	@Override
-	public Object removeElem(Object chave) {
-		return null;
-	}
+
 
 	@Override
 	public LinkedList keys() {

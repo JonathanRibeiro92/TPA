@@ -19,6 +19,6 @@ public interface TGrafoND{
     abstract Object removeEdge(Edge e);
     */
     LinkedList<Edge> incidentEdges(Vertex v);
-    LinkedList<Vertice> adjacentVertices(Vertex v);
+    LinkedList<Vertex> adjacentVertices(Vertex v);
     
 }
