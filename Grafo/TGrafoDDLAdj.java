@@ -5,89 +5,105 @@ import Hash.tadDicionario.Documento.ArquivoTxt;
 import Hash.tadDicionario.TDicChain;
 import java.util.LinkedList;
 
-public class TGrafoDDLAdj  extends TGrafoND {
+public class TGrafoDDLAdj  extends TGrafoLAdj implements TGrafoDD {
 
+    /*
     private LinkedList<Edge> edges;                                         // lista de arestas adj
     private LinkedList<Vertex> vertices;                                   // lista de vertices adj
 
     private TDic dicEdges = new TDicChain();
     private TDic dicVertexes = new TDicChain();
-
-
-
-    @Override
-    int numVertices() {
-        return dicVertexes.size();
+    */
+    
+       @Override
+    public int outDegree(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        return vertexLad.myOutDegree();
     }
 
     @Override
-    int numEdges() {
-        return dicEdges.size();
+    public int inDegree(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        return vertexLad.myInDegree();
     }
 
     @Override
-    LinkedList<Edge> edges() {
-        return dicEdges.keys();
+    public LinkedList<Edge> inIncidentEdges(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesIn();
     }
 
     @Override
-    boolean areAdjacent(Vertex u, Vertex v) {
-        return false;
+    public LinkedList<Edge> outIncidentEdges(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        return (LinkedList<Edge>)(LinkedList<?>)vertexLad.getEdgesOut();
     }
 
-    boolean areAdjacent(VertexLAd u, VertexLAd v) {
-        LinkedList<EdgeLAd> lst_edges = new LinkedList<EdgeLAd>();
+    @Override
+    public LinkedList<Edge> incidentEdges(Vertex vertice) {
+        LinkedList<Edge> edges = inIncidentEdges(vertice);
+        edges.addAll(outIncidentEdges(vertice));
 
+        return edges;
+    }
 
-        for (int i = 0; i < lst_edges.size() ; i++) {
-            EdgeLAd e = lst_edges.get(i);
+    @Override
+    public LinkedList<Vertex> inAdjacentVertices(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        LinkedList<Vertex> lst = new LinkedList<>();
 
-            if(e.isEndPoint(v))
-                return true;
+        for ( EdgeLAd  edgeLad: vertexLad.getEdgesIn()) {
+            lst.add(edgeLad.myOpossite(vertexLad));
         }
 
-        return false;
-    }
-
-
-
-    @Override
-    LinkedList<Vertex> adjacentVertices(Vertex v) {
-        return null;
+        return lst;
     }
 
     @Override
-    String[] endVertices(String e) {
-        return new String[0];
+    public LinkedList<Vertex> outAdjacentVertices(Vertex vertice) {
+        VertexLAd  vertexLad = this.dicVertexes.findElement(vertice.getId());
+        LinkedList<Vertex> lst = new LinkedList<>();
+
+        for ( EdgeLAd  edgeLad: vertexLad.getEdgesOut()) {
+            lst.add(edgeLad.myOpossite(vertexLad));
+        }
+
+        return lst;
     }
 
     @Override
-    String opposite(String v, String e) {
-        return null;
+    public LinkedList<Vertex> adjacenteVertices(Vertex vertice) {
+        LinkedList<Vertex> edges = inAdjacentVertices(vertice);
+        edges.addAll(outAdjacentVertices(vertice));
+
+        return edges;
     }
 
     @Override
-    Vertex insertVertex(Object x) {
-        return null;
+    public Vertex destination(Edge edge) {
+        EdgeLAd  edgeLad = edges.findElement(edge.getId());
+
+        return edgeLad.getDestination();
     }
 
     @Override
-    Edge insertEdge(Vertex u, Vertex v, Object x) {
-        return null;
+    public Vertex origin(Edge edge) {
+        EdgeLAd  edgeLad = edges.findElement(edge.getId());
+
+        return edgeLad.getOrigin();
     }
 
-    @Override
-    LinkedList<Edge> incidentEdges(Vertex v) {
-        return null;
-    }
+    public static TGrafoDDLAdj carrega(String nome_arq_TGF){
+        TGrafoDDLAdj grafo = new TGrafoDDLAdj();
+        
+        ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 
-    @Override
-    Object removeVertex(Vertex v) {
-        return null;
-    }
+        assert arq != null;
+        carregaGenerico(grafo,arq);
 
-    @Override
-    Object removeEdge(Edge e) {
-        return null;
+        arq.close();
+
+        return grafo;
+
     }
 }
