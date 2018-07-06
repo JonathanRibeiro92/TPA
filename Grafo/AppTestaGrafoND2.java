@@ -27,8 +27,12 @@ public class AppTestaGrafoND2 {
         // O conteúdo do grafo original, gndLad, é lido do arquivo meses.txt.
         // O conteúdo do grafo clone, gndMat, é salvo em meses2.txt.
         String cwd = System.getProperty("user.dir");
-        String grafoIN = cwd + "/../../bdgrafos/meses.txt";
-        String grafoOUT = cwd + "/../../bdgrafos/meses2.txt";
+        //String grafoIN = cwd + "/../../bdgrafos/meses.txt";
+        //String grafoOUT = cwd + "/../../bdgrafos/meses2.txt";
+
+        String grafoIN = cwd + "/bdgrafos/meses.txt";
+        String grafoOUT = cwd + "/bdgrafos/meses2.txt";
+
 
         // Lê o grafo original do disco e o exibe via GraphStream.
         gndLad.carrega(grafoIN);
