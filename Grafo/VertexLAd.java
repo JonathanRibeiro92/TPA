@@ -39,7 +39,7 @@ public class VertexLAd extends Vertex {
         LinkedList<EdgeLAd>lstEdge = new LinkedList<EdgeLAd>();
 
         for(int i = 0 ; i <lstIN.size(); i++){
-            lstEdge.add((EdgeLAd)lstIN.get(i));
+            lstEdge.add((EdgeLAd)dicEdgesIN.findElement(lstIN.get(i)));
         }
 
         return lstEdge;
@@ -51,7 +51,9 @@ public class VertexLAd extends Vertex {
         LinkedList<EdgeLAd>lstEdge = new LinkedList<EdgeLAd>();
 
         for(int i = 0 ; i <lstOUT.size(); i++){
-            lstEdge.add((EdgeLAd)lstOUT.get(i));
+            //EdgeLAd edgeLAd = new EdgeLAd();
+
+            lstEdge.add((EdgeLAd)dicEdgesOUT.findElement(lstOUT.get(i)));
         }
 
         return lstEdge;

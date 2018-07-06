@@ -118,8 +118,10 @@ public class TDicChain extends TDic{
 		//Decidindo se é uma alteração ou a inclusão de uma nova entrada
 		int posAchou = pesquisaItem(k,vet_conteudo[pos]);
 		
-		if (posAchou== -1)
+		if (posAchou== -1) {
 			vet_conteudo[pos].add(item);
+			quant_entradas++;
+		}
 		else
 			vet_conteudo[pos].get(posAchou).setDado(dado);
 		
@@ -154,6 +156,7 @@ public class TDicChain extends TDic{
 		if(posItem != -1){
 			temp = vet_conteudo[pos].get(posItem);
 			vet_conteudo[pos].remove(posItem);
+			quant_entradas--;
 			return temp.getDado();
 		}
 		
@@ -218,14 +221,14 @@ public class TDicChain extends TDic{
 			if(list.size() > 0)
 			{
 				for (TItemDic item:list) {
-					keys.add((Object) item.getKey());
+					keys.add( item.getKey());
 				}
 			}
 		}
 
 		return keys;
 	}
-	
+
 
 	@Override
 	public LinkedList elements() {
