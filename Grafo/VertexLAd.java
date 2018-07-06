@@ -59,8 +59,8 @@ public class VertexLAd extends Vertex {
     }
 
     public LinkedList<EdgeLAd> getEdges(){
-        LinkedList<EdgeLAd> lstEdgeOUT = getEdgesOUT();
-        LinkedList<EdgeLAd> lstEdgeIN = getEdgesIN();
+        LinkedList<EdgeLAd> lstEdgeOUT = this.getEdgesOUT();
+        LinkedList<EdgeLAd> lstEdgeIN = this.getEdgesIN();
         LinkedList<EdgeLAd>lstEdge = new LinkedList<EdgeLAd>();
 
         lstEdge.addAll(lstEdgeIN);

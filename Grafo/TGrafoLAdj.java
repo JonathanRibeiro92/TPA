@@ -26,7 +26,13 @@ public class TGrafoLAdj extends Grafo {
 
     @Override
     public LinkedList<Vertex> vertices() {
-        return (LinkedList<Vertex>)(LinkedList<?>) dicVertexes.elements();
+        LinkedList<Vertex> lstVertices = new LinkedList<Vertex>();
+
+        for (int i=0; i<dicVertexes.elements().size(); i++){
+            Vertex vertex = (Vertex) dicVertexes.elements().get(i);
+            lstVertices.add(vertex);
+        }
+        return lstVertices;
     }
 
     @Override
@@ -36,7 +42,13 @@ public class TGrafoLAdj extends Grafo {
 
     @Override
     public LinkedList<Edge> edges() {
-        return (LinkedList<Edge>)(LinkedList<?>) dicEdges.elements();
+        LinkedList<Edge> lstEdges = new LinkedList<Edge>();
+
+        for (int i=0; i<dicEdges.elements().size(); i++){
+            Edge edge = (Edge) dicEdges.elements().get(i);
+            lstEdges.add(edge);
+        }
+        return lstEdges;
     }
 
     @Override

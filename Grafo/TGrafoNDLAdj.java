@@ -28,7 +28,7 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
     }
     */
 
-
+    /*
     private TDic dicEdges;
     private TDic dicVertexes;
 
@@ -37,6 +37,7 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
         dicVertexes = new TDicChain();
 
     }
+    */
     
      @Override
     public LinkedList<Edge> incidentEdges(Vertex vertice) {
@@ -75,42 +76,42 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
 
     }
 
-    @Override
-    public String toString(){
-
-        TDic dicIDgrafoID_tgf = new TDicChain();
-        /* Escrevendo os dicVertexes */
-        String strGrafo = "";
-        int id = 1;
-
-        String linha;
-
-        for(int i = 0; i<  dicVertexes.size(); i++){
-            Vertex vertice = (Vertex)dicVertexes.findElement(i);
-            linha = id + " " + vertice.getLabel();
-            strGrafo+=(linha);
-            strGrafo+=("\n");
-
-            dicIDgrafoID_tgf.insertItem(i,id);
-
-            id++;
-        }
-        strGrafo+=("#");
-        strGrafo+=("\n");
-
-        /* escrevendo as arestas */
-        for (EdgeLAd edge: (LinkedList<EdgeLAd>)dicEdges.elements()) {
-            if(!edge.getLabel().substring(0,2).equals("@#")) {
-                linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1) + " " + edge.getLabel();
-            }else{
-                linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1);
-            }
-            strGrafo+=(linha);
-            strGrafo+=("\n");
-
-        }
-        return strGrafo;
-    }
+    //@Override
+    //public String toString(){
+//
+    //    TDic dicIDgrafoID_tgf = new TDicChain();
+    //    /* Escrevendo os dicVertexes */
+    //    String strGrafo = "";
+    //    int id = 1;
+//
+    //    String linha;
+//
+    //    for(int i = 0; i<  dicVertexes.size(); i++){
+    //        Vertex vertice = (Vertex)dicVertexes.findElement(i);
+    //        linha = id + " " + vertice.getLabel();
+    //        strGrafo+=(linha);
+    //        strGrafo+=("\n");
+//
+    //        dicIDgrafoID_tgf.insertItem(i,id);
+//
+    //        id++;
+    //    }
+    //    strGrafo+=("#");
+    //    strGrafo+=("\n");
+//
+    //    /* escrevendo as arestas */
+    //    for (EdgeLAd edge: (LinkedList<EdgeLAd>)dicEdges.elements()) {
+    //        if(!edge.getLabel().substring(0,2).equals("@#")) {
+    //            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1) + " " + edge.getLabel();
+    //        }else{
+    //            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1);
+    //        }
+    //        strGrafo+=(linha);
+    //        strGrafo+=("\n");
+//
+    //    }
+    //    return strGrafo;
+    //}
     
     
    

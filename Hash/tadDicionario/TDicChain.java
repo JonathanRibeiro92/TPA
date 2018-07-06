@@ -5,7 +5,6 @@ import java.util.LinkedList;
 import Hash.TabH.TDic;
 import Hash.hashFunctions.HashEngine;
 import Hash.hashFunctions.HashEngineDefault;
-import Hash.tadDicionario.Primo;
 
 class TItemDic{
 	private Object key = null;
@@ -171,7 +170,18 @@ public class TDicChain extends TDic{
 	
 	
 	public Object getKeys(){
-		return null;
+		LinkedList<Object> keys = new LinkedList<>();
+
+		for (LinkedList<TItemDic> list: vet_conteudo) {
+			if(list.size() > 0)
+			{
+				for (TItemDic item:list) {
+					keys.add((Object)item.getKey());
+				}
+			}
+		}
+
+		return keys;
 	}
 	
 	public Object getItens(){
@@ -202,12 +212,35 @@ public class TDicChain extends TDic{
 
 	@Override
 	public LinkedList keys() {
-		return null;
+		LinkedList<Object> keys = new LinkedList<>();
+
+		for (LinkedList<TItemDic> list: vet_conteudo) {
+			if(list.size() > 0)
+			{
+				for (TItemDic item:list) {
+					keys.add((Object) item.getKey());
+				}
+			}
+		}
+
+		return keys;
 	}
+	
 
 	@Override
 	public LinkedList elements() {
-		return null;
+		LinkedList<Object> lstElements = new LinkedList<>();
+
+		for (LinkedList<TItemDic> list: vet_conteudo) {
+			if(list.size() > 0)
+			{
+				for (TItemDic item:list) {
+					lstElements.add(item.getDado());
+				}
+			}
+		}
+
+		return lstElements;
 	}
 	
 }
