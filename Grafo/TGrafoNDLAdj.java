@@ -62,56 +62,55 @@ public class TGrafoNDLAdj extends TGrafoLAdj implements TGrafoND{
         return lst;
     }
 
-    public static TGrafoNDLAdj carrega(String nome_arq_TGF){
-        TGrafoNDLAdj graph = new TGrafoNDLAdj();
+    public void carrega(String nome_arq_TGF){
+        //TGrafoNDLAdj grafo = new TGrafoNDLAdj();
 
         ArquivoTxt arq = ArquivoTxt.open(nome_arq_TGF, "rt");
 
         assert arq != null;
-        carregaGenerico(graph,arq);
+        carregaGenerico(this,arq);
 
         arq.close();
 
-        return graph;
+        //return grafo;
 
     }
 
     //@Override
-    //public String toString(){
-//
-    //    TDic dicIDgrafoID_tgf = new TDicChain();
-    //    /* Escrevendo os dicVertexes */
-    //    String strGrafo = "";
-    //    int id = 1;
-//
-    //    String linha;
-//
-    //    for(int i = 0; i<  dicVertexes.size(); i++){
-    //        Vertex vertice = (Vertex)dicVertexes.findElement(i);
-    //        linha = id + " " + vertice.getLabel();
-    //        strGrafo+=(linha);
-    //        strGrafo+=("\n");
-//
-    //        dicIDgrafoID_tgf.insertItem(i,id);
-//
-    //        id++;
-    //    }
-    //    strGrafo+=("#");
-    //    strGrafo+=("\n");
-//
-    //    /* escrevendo as arestas */
-    //    for (EdgeLAd edge: (LinkedList<EdgeLAd>)dicEdges.elements()) {
-    //        if(!edge.getLabel().substring(0,2).equals("@#")) {
-    //            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1) + " " + edge.getLabel();
-    //        }else{
-    //            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1);
-    //        }
-    //        strGrafo+=(linha);
-    //        strGrafo+=("\n");
-//
-    //    }
-    //    return strGrafo;
-    //}
+    public String toString(){
+
+    /* Escrevendo os dicVertexes */
+    String strGrafo = "";
+    int id = 1;
+
+    String linha;
+
+    for(int i = 0; i<  dicVertexes.size(); i++){
+        Vertex vertice = (Vertex)dicVertexes.findElement(i);
+        linha = id + " " + vertice.getLabel();
+        strGrafo+=(linha);
+        strGrafo+=("\n");
+
+
+
+        id++;
+    }
+    strGrafo+=("#");
+    strGrafo+=("\n");
+
+    /* escrevendo as arestas */
+    for (EdgeLAd edge: (LinkedList<EdgeLAd>)dicEdges.elements()) {
+        if(!edge.getLabel().substring(0,2).equals("@#")) {
+            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1) + " " + edge.getLabel();
+        }else{
+            linha = (edge.getOrigem().getId()+1) + " " + (edge.getDestino().getId()+1);
+        }
+        strGrafo+=(linha);
+        strGrafo+=("\n");
+
+    }
+    return strGrafo;
+}
     
     
    

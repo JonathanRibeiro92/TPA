@@ -18,6 +18,8 @@ public class AppTestaGrafoND2 {
         TGrafoNDMAd gndMat = new TGrafoNDMAd();
         TGrafoNDLAdj gndLad = new TGrafoNDLAdj();
 
+
+
         // ****************************************************
         // *  FAZ A CLONAGEM DO GRAFO gndLad NO GRAFO gndMat. *
         // *                                                  *
@@ -33,9 +35,12 @@ public class AppTestaGrafoND2 {
         String grafoIN = cwd + "/bdgrafos/meses.txt";
         String grafoOUT = cwd + "/bdgrafos/meses2.txt";
 
-
+        //TGrafoNDLAdj grafoTeste = new TGrafoNDLAdj();
         // Lê o grafo original do disco e o exibe via GraphStream.
         gndLad.carrega(grafoIN);
+
+        //grafoTeste = TGrafoNDLAdj.carrega(grafoIN);
+
         //TPA2GS.exibeGrafo(gndLad);
         // Se for o caso, substitua a linha acima pela sua classe de exibição GraphStream.
 
@@ -65,7 +70,7 @@ public class AppTestaGrafoND2 {
         // Enquanto não clonar todas as arestas do grafo original, faça:
         while(i < lst_es_glad.size()){
             // Leia a i-ésima aresta do grafo oriignal e obtenha os seus endVertices.
-            lst_end_vertices_gnLad = new LinkedList<Vertex>();//(gndLad.endVertices(lst_es_glad.get(i).getLabel()));
+            lst_end_vertices_gnLad = gndLad.endVertices(lst_es_glad.get(i).getLabel());
 
 
             // Faça um bkp do primeiro end vertice da aresta.
@@ -73,37 +78,37 @@ public class AppTestaGrafoND2 {
 
             // Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
             // copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-            if(dicVclonados.findElement(bkpV.getLabel()).equals(TDicEA.NO_SUCH_KEY)){
+            if(dicVclonados.findElement(bkpV.getId()).equals(TDicEA.NO_SUCH_KEY)){
                 dado = bkpV.getDado();
                 v = gndMat.insertVertex(dado);
                 v.setLabel(bkpV.getLabel());
-                dicVclonados.insertItem(v.getLabel(), v);
+                dicVclonados.insertItem(v.getId(), v);
             }
             else
                 // Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
                 // clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-                v = (Vertex)dicVclonados.findElement(bkpV.getLabel());
+                v = (Vertex)dicVclonados.findElement(bkpV.getId());
 
             // Faça um bkp do segundo end vertice da aresta.
             bkpV = lst_end_vertices_gnLad.get(1);
 
             // Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
             // copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-            if(dicVclonados.findElement(bkpV.getLabel()).equals(TDicEA.NO_SUCH_KEY)){
+            if(dicVclonados.findElement(bkpV.getId()).equals(TDicEA.NO_SUCH_KEY)){
                 dado = bkpV.getDado();
                 w = gndMat.insertVertex(dado);
                 w.setLabel(bkpV.getLabel());
-                dicVclonados.insertItem(w.getLabel(), w);
+                dicVclonados.insertItem(w.getId(), w);
             }
             else
                 // Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
                 // clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-                w = (Vertex)dicVclonados.findElement(bkpV.getLabel());
+                w = (Vertex)dicVclonados.findElement(bkpV.getId());
 
             // FInalmente, faz a clonagem da aresta do grafo origem.
             Edge bkpE = lst_es_glad.get(i);
-            e = gndMat.insertEdge(v, w, bkpE.getDado());
-            e.setLabel(bkpE.getLabel());
+            e = gndMat.insertEdge(v, w, bkpE.getDado(),bkpE.getLabel());
+            //e.setLabel(bkpE.getLabel());
 
             // Próxima aresta do grafo origem a ser clonada.
             i++;

@@ -2,7 +2,6 @@ package Grafo;
 
 import Hash.tadDicionario.Documento.ArquivoTxt;
 import Hash.TabH.TDic;
-import javafx.collections.transformation.TransformationList;
 import Hash.tadDicionario.TDicChain;
 import java.util.LinkedList;
 
@@ -109,7 +108,7 @@ public class TGrafoNDMAd extends TGrafoMAd implements TGrafoND{
         String edgeLabel = edge.getLabel();
         dicEdges.removeElement(edge.getId());
 
-        String [] endPoints = endVertices(edge.getLabel());
+        String [] endPoints = endVerticesString(edge.getLabel());
 
         int row = findVertexPosByLabel(endPoints[0]);
         int column = findVertexPosByLabel(endPoints[1]);

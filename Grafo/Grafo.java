@@ -9,7 +9,9 @@ public abstract class Grafo {
     public abstract int numEdges();
     public abstract LinkedList<Edge> edges();
     public abstract Edge getEdge(String vertex1, String vertex2);
-    public abstract String[] endVertices(String edge);
+    public abstract String[] endVerticesString(String edge);
+    public abstract LinkedList<Vertex> endVertices(Edge edge);
+    public abstract LinkedList<Vertex> endVertices(String edge);
     public abstract String opossite(String vertex, String edge);
     public abstract Vertex insertVertex(Object value);
     public abstract Vertex insertVertex(Object value, String label);

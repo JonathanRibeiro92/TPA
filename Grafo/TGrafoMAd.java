@@ -72,7 +72,7 @@ public class TGrafoMAd extends Grafo {
 	}
 
 	@Override
-	public String[] endVertices(String edge) {
+	public String[] endVerticesString(String edge) {
 		int tam = numVertices();
 
 		int id = findEdgePosByLabel(edge);
@@ -107,10 +107,10 @@ public class TGrafoMAd extends Grafo {
 				if(matrix[i][j] != null && matrix[i][j].equals(id)){
 					Vertex vertex1 = (Vertex) dicVertexes.findElement(i);
 					Vertex vertex2;
-					if(!vertex1.equals(""))
+					if(vertex1 != null)
 					{
 						vertex2 = (Vertex) dicVertexes.findElement(j);
-						if(!vertex2.equals(""))
+						if(vertex2 != null)
 						{
 							return new LinkedList<>(Arrays.asList(vertex2, vertex1));
 						}
@@ -122,12 +122,40 @@ public class TGrafoMAd extends Grafo {
 		return null;
 	}
 
+
+	public LinkedList<Vertex> endVertices(String edge) {
+
+		int tam = numVertices();
+		int id = findEdgePosByLabel(edge);
+
+		for (int i = 0; i< tam; i++){
+			for(int j = 0; j < tam; j++){
+				if(matrix[i][j] != null && matrix[i][j].equals(id)){
+					Vertex vertex1 = (Vertex) dicVertexes.findElement(i);
+					Vertex vertex2;
+					if(vertex1 != null)
+					{
+						vertex2 = (Vertex) dicVertexes.findElement(j);
+						if(vertex2 != null)
+						{
+							return new LinkedList<>(Arrays.asList(vertex2, vertex1));
+						}
+					}
+				}
+			}
+		}
+
+		return null;
+	}
+
+
+
 	@Override
 	public String opossite(String vertex, String edge) {
 		if(findVertexPosByLabel(vertex)==-1) return null;
 		if(findEdgePosByLabel(edge)==-1)return null;
 
-		String endPoints[] = endVertices(edge);
+		String endPoints[] = endVerticesString(edge);
 
 		if(endPoints != null) {
 			if (vertex.equals(endPoints[0])) {

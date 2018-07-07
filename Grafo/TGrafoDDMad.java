@@ -134,7 +134,7 @@ public TGrafoDDMad() {
         String edgeLabel = edge.getLabel();
         dicEdges.removeElement(edge.getId());
 
-        String [] endPoints = endVertices(edge.getLabel());
+        String [] endPoints = endVerticesString(edge.getLabel());
 
         int row = findVertexPosByLabel(endPoints[0]);
         int column = findVertexPosByLabel(endPoints[1]);

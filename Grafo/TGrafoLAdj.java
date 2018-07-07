@@ -94,11 +94,12 @@ public class TGrafoLAdj extends Grafo {
     }
 
     @Override
-    public String[] endVertices(String edge) {
+    public String[] endVerticesString(String edge) {
         EdgeLAd edgeLad = findEdges(edge);
         return new String[] { edgeLad.getOrigem().getLabel(),edgeLad.getDestino().getLabel()};
     }
 
+    @Override
     public LinkedList<Vertex> endVertices(Edge edge) {
         EdgeLAd edgeLad = (EdgeLAd)dicEdges.findElement(edge.getId());
         LinkedList<Vertex> lst = new LinkedList<>();
@@ -108,6 +109,19 @@ public class TGrafoLAdj extends Grafo {
 
         return lst;
     }
+
+    @Override
+    public LinkedList<Vertex> endVertices(String edge) {
+
+        EdgeLAd edgeLad = findEdges(edge);
+
+        LinkedList<Vertex> lst = new LinkedList<>();
+        lst.add(edgeLad.getOrigem());
+        lst.add(edgeLad.getDestino());
+        return lst;
+    }
+
+
 
     @Override
     public String opossite(String vertex, String edge) {
