@@ -108,7 +108,7 @@ public class AppTestaGrafoND2 {
             // FInalmente, faz a clonagem da aresta do grafo origem.
             Edge bkpE = lst_es_glad.get(i);
             e = gndMat.insertEdge(v, w, bkpE.getDado(),bkpE.getLabel());
-            //e.setLabel(bkpE.getLabel());
+            e.setLabel(bkpE.getLabel());
 
             // Próxima aresta do grafo origem a ser clonada.
             i++;

@@ -42,7 +42,13 @@ public class TGrafoMAd extends Grafo {
 
 	@Override
 	public LinkedList<Vertex> vertices() {
-		return dicVertexes.elements();
+		LinkedList<Vertex> lstVertex = new LinkedList<Vertex>();
+		for (Object o:
+			 dicVertexes.elements()) {
+			lstVertex.add((Vertex)o);
+		}
+
+		return lstVertex;
 	}
 
 	@Override
@@ -52,7 +58,13 @@ public class TGrafoMAd extends Grafo {
 
 	@Override
 	public LinkedList<Edge> edges() {
-		return dicEdges.elements();
+		LinkedList<Edge> lstEdge = new LinkedList<Edge>();
+		for (Object o:
+				dicEdges.elements()) {
+			lstEdge.add((Edge)o);
+		}
+
+		return lstEdge;
 	}
 
 	//Get edge - se a posição do vertex1 for encontrada eu busco o 2 senao retorno nulo o mesmo vale pro vertex 2;
