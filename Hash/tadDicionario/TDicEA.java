@@ -44,7 +44,7 @@ public class TDicEA extends TDic{
     }
 
     private int encontraItem(Object k) {
-        int pos = hengine.calcCodeHash(k) % N;
+        int pos = hengine.calcCodeHash(k) % this.conteudos.length;
         int j = pos;
 
         do {
@@ -219,7 +219,7 @@ public class TDicEA extends TDic{
             else{
                 if(firstNull != -1)
                 {
-                    conteudos[firstNull] = new Item(elem,k, hash);
+                    conteudos[firstNull] = new Item(k,elem, hash);
                     this.quant++;
                     return true;
                 }

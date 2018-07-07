@@ -78,32 +78,32 @@ public class AppTestaGrafoND2 {
 
             // Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
             // copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-            if(dicVclonados.findElement(bkpV.getId()).equals(TDicEA.NO_SUCH_KEY)){
+            if(dicVclonados.findElement(bkpV.getLabel()).equals(TDicEA.NO_SUCH_KEY)){
                 dado = bkpV.getDado();
                 v = gndMat.insertVertex(dado);
                 v.setLabel(bkpV.getLabel());
-                dicVclonados.insertItem(v.getId(), v);
+                dicVclonados.insertItem(v.getLabel(),v);
             }
             else
                 // Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
                 // clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-                v = (Vertex)dicVclonados.findElement(bkpV.getId());
+                v = (Vertex)dicVclonados.findElement(bkpV.getLabel());
 
             // Faça um bkp do segundo end vertice da aresta.
             bkpV = lst_end_vertices_gnLad.get(1);
 
             // Se este vértice ainda não foi clonado então cloná-lo: criar um novo vértice,
             // copiar os campos dado e label, inserí-lo no grafo clone (gndMat).
-            if(dicVclonados.findElement(bkpV.getId()).equals(TDicEA.NO_SUCH_KEY)){
+            if(dicVclonados.findElement(bkpV.getLabel()).equals(TDicEA.NO_SUCH_KEY)){
                 dado = bkpV.getDado();
                 w = gndMat.insertVertex(dado);
                 w.setLabel(bkpV.getLabel());
-                dicVclonados.insertItem(w.getId(), w);
+                dicVclonados.insertItem(w.getLabel(), w);
             }
             else
                 // Se o vértice já foi clonado, resgatá-lo do dicionário de clonados para posterior
                 // clonagem da aresta (porque a clonagem da aresta precisa de 2 end vértices, linha 96).
-                w = (Vertex)dicVclonados.findElement(bkpV.getId());
+                w = (Vertex)dicVclonados.findElement(bkpV.getLabel());
 
             // FInalmente, faz a clonagem da aresta do grafo origem.
             Edge bkpE = lst_es_glad.get(i);
