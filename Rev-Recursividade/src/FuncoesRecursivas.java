@@ -1,6 +1,8 @@
+import sun.awt.image.ImageWatched;
+
+import java.util.ArrayList;
 import java.util.Arrays;
-
-
+import java.util.LinkedList;
 
 
 public class FuncoesRecursivas {
@@ -141,8 +143,24 @@ public class FuncoesRecursivas {
 	
 	
 	//11
-    
-    
+    public static LinkedList<LinkedList<Object>> permutar(LinkedList<Object> lst) {
+        if (lst.size() <=1){
+            LinkedList<LinkedList<Object>> lstPerm = new LinkedList<>();
+            lstPerm.add(lst);
+            return lstPerm;
+        }else {
+            LinkedList<LinkedList<Object>> lstPerm = new LinkedList<>();
+            for(Object obj: lst) {
+                LinkedList<Object> lstAux = new LinkedList<>(lst);
+                lstAux.remove(obj);
+                for (LinkedList<Object> perm : permutar(lstAux)) {
+                    perm.add(0, obj);
+                    lstPerm.add(perm);
+                }
+            }
+            return lstPerm;
+        }
+    }
     
     public static void main(String args[]) {
         int lista[] = {3,7,10};
@@ -170,6 +188,26 @@ public class FuncoesRecursivas {
 		
 		
 		String palavra2 = "onibus";
-		System.out.println(inverteString(palavra));
+		System.out.println(inverteString(palavra2));
+
+
+		LinkedList<Object> lst = new LinkedList();
+		lst.add('a');
+		lst.add('b');
+		lst.add('c');
+
+
+
+
+		System.out.println("Lista antes da Permutação: " + lst);
+
+        LinkedList<LinkedList<Object>> lstPermuta = new LinkedList();
+
+        lstPermuta = permutar(lst);
+
+		System.out.println("Lista depois da Permutação: " + lstPermuta);
+
+
+
     }
 }
